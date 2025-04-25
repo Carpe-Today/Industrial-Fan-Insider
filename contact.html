@@ -4,246 +4,220 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - Industrial Fan Insider</title>
-    <meta name="description" content="Contact Industrial Fan Insider for questions about industrial fans, ventilation solutions, or partnership opportunities.">
-    <meta name="content-type" content="contact">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="js/scripts.js" defer></script>
+    <script src="js/analytics.js" defer></script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container header-container">
-            <div class="logo">
-                <a href="index.html">
-                    <span class="logo-text">Industrial Fan Insider</span>
-                </a>
-            </div>
-            <nav class="nav">
-                <button class="mobile-nav-toggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <ul class="nav-list">
-                    <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="fan-types/hvls-fans.html" class="nav-link">Fan Types</a></li>
-                    <li class="nav-item"><a href="reviews/index.html" class="nav-link">Reviews</a></li>
-                    <li class="nav-item"><a href="guides/index.html" class="nav-link">Guides</a></li>
-                    <li class="nav-item"><a href="industries/index.html" class="nav-link">Industries</a></li>
-                    <li class="nav-item"><a href="resources/roi-calculator.html" class="nav-link">ROI Calculator</a></li>
-                    <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-                    <li class="nav-item"><a href="contact.html" class="nav-link active">Contact</a></li>
-                </ul>
-            </nav>
+    <header>
+        <div class="logo-container">
+            <img src="images/logo-simplified-three-blade.svg" alt="Industrial Fan Insider Logo" class="logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#guides">Guides</a></li>
+                <li><a href="#industries">Industries</a></li>
+                <li><a href="tools/airflow-simulator/index.html">Airflow Simulator</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="contact-info">
+            <p>Call us: <a href="tel:8554857326">(855) HVLSFAN</a></p>
         </div>
     </header>
 
-    <!-- Page Header -->
-    <section class="section bg-light" style="margin-top: 70px; padding-top: 3rem; padding-bottom: 3rem;">
-        <div class="container">
-            <h1 class="text-center">Contact Us</h1>
-            <p class="text-center mb-0">We're here to help with all your industrial fan questions</p>
+    <section class="page-header">
+        <h1>Contact Us</h1>
+        <p>Have questions about industrial fans? Need help choosing the right solution? We're here to help!</p>
+    </section>
+
+    <section class="contact-container">
+        <div class="contact-methods">
+            <div class="contact-method">
+                <div class="contact-icon">
+                    <img src="images/phone-icon.svg" alt="Phone Icon" class="icon">
+                </div>
+                <h3>Call Us</h3>
+                <p>Speak directly with our industrial fan experts</p>
+                <a href="tel:8554857326" class="contact-link">(855) HVLSFAN</a>
+                <p class="hours">Monday-Friday: 8am-6pm ET</p>
+            </div>
+            
+            <div class="contact-method">
+                <div class="contact-icon">
+                    <img src="images/email-icon.svg" alt="Email Icon" class="icon">
+                </div>
+                <h3>Email Us</h3>
+                <p>Send us your questions anytime</p>
+                <a href="mailto:info@industrialfaninsider.com" class="contact-link">info@industrialfaninsider.com</a>
+                <p class="hours">Response within 24 hours</p>
+            </div>
+            
+            <div class="contact-method">
+                <div class="contact-icon">
+                    <img src="images/text-icon.svg" alt="Text Message Icon" class="icon">
+                </div>
+                <h3>Text Us</h3>
+                <p>Quick questions? Text our support team</p>
+                <a href="sms:8554857326" class="contact-link">(855) HVLSFAN</a>
+                <p class="hours">Response within 2 hours</p>
+            </div>
+        </div>
+
+        <div class="contact-form-container">
+            <h2>Send Us a Message</h2>
+            <p>Fill out the form below and we'll get back to you as soon as possible.</p>
+            
+            <form id="contact-form" class="contact-form">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <select id="subject" name="subject" required>
+                        <option value="">Select a subject</option>
+                        <option value="product-question">Product Question</option>
+                        <option value="buying-advice">Buying Advice</option>
+                        <option value="technical-support">Technical Support</option>
+                        <option value="partnership">Partnership Inquiry</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Your Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="text-consent" name="text-consent">
+                    <label for="text-consent">I consent to receive text messages at the number provided</label>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="button">Send Message</button>
+                </div>
+            </form>
         </div>
     </section>
 
-    <!-- Contact Content -->
-    <section class="section">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 col-md-6 mb-4">
-                    <h2>Get In Touch</h2>
-                    <p>Have questions about industrial fans? Looking for advice on the best ventilation solution for your facility? Want to discuss partnership opportunities? We're here to help!</p>
-                    <p>Fill out the form, and our team will get back to you within 1-2 business days.</p>
-                    
-                    <div class="mt-5">
-                        <h3>Contact Information</h3>
-                        <ul class="list-unstyled mt-4">
-                            <li class="d-flex align-items-center mb-3">
-                                <i class="fas fa-envelope text-primary mr-3" style="width: 20px;"></i>
-                                <span>info@industrialfaninsider.com</span>
-                            </li>
-                            <li class="d-flex align-items-center mb-3">
-                                <i class="fas fa-phone-alt text-primary mr-3" style="width: 20px;"></i>
-                                <span>(555) 123-4567</span>
-                            </li>
-                            <li class="d-flex align-items-center mb-3">
-                                <i class="fas fa-map-marker-alt text-primary mr-3" style="width: 20px;"></i>
-                                <span>123 Airflow Avenue, Suite 456<br>Ventilation City, AC 78901</span>
-                            </li>
-                            <li class="d-flex align-items-center mb-3">
-                                <i class="fas fa-clock text-primary mr-3" style="width: 20px;"></i>
-                                <span>Monday - Friday: 9:00 AM - 5:00 PM EST</span>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="mt-5">
-                        <h3>Connect With Us</h3>
-                        <div class="footer-social mt-3">
-                            <a href="#" class="social-link" style="background-color: #3b5998;"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="social-link" style="background-color: #1da1f2;"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="social-link" style="background-color: #0077b5;"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#" class="social-link" style="background-color: #bd081c;"><i class="fab fa-pinterest-p"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 mb-4">
-                    <div class="bg-light p-4 rounded-lg">
-                        <h3 class="mb-4">Send Us a Message</h3>
-                        <form id="contact-form" action="https://formspree.io/f/your-formspree-endpoint" method="POST">
-                            <div class="form-group mb-3">
-                                <label for="name" class="form-label">Your Name *</label>
-                                <input type="text" id="name" name="name" class="form-control" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="email" class="form-label">Email Address *</label>
-                                <input type="email" id="email" name="email" class="form-control" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="phone" class="form-label">Phone Number</label>
-                                <input type="tel" id="phone" name="phone" class="form-control">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="company" class="form-label">Company Name</label>
-                                <input type="text" id="company" name="company" class="form-control">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="industry" class="form-label">Industry</label>
-                                <select id="industry" name="industry" class="form-control">
-                                    <option value="">Select your industry</option>
-                                    <option value="Warehouse">Warehouse & Distribution</option>
-                                    <option value="Manufacturing">Manufacturing</option>
-                                    <option value="Agriculture">Agriculture</option>
-                                    <option value="Food & Beverage">Food & Beverage</option>
-                                    <option value="Aviation">Aviation</option>
-                                    <option value="Automotive">Automotive</option>
-                                    <option value="Education">Education</option>
-                                    <option value="Retail">Retail</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="subject" class="form-label">Subject *</label>
-                                <input type="text" id="subject" name="subject" class="form-control" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="message" class="form-label">Message *</label>
-                                <textarea id="message" name="message" class="form-control" rows="5" required></textarea>
-                            </div>
-                            <div class="form-group mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter" checked>
-                                    <label class="form-check-label" for="newsletter">
-                                        Subscribe to our newsletter for industrial fan tips and updates
-                                    </label>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Send Message</button>
-                        </form>
-                    </div>
-                </div>
+    <section class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <h3>What types of industrial fans do you review?</h3>
+                <p>We review all types of industrial fans including HVLS (High-Volume, Low-Speed) fans, exhaust fans, ceiling fans, and portable industrial fans. Our focus is primarily on large-scale fans used in commercial and industrial settings.</p>
             </div>
-
-            <div class="row mt-5">
-                <div class="col-12">
-                    <h2>Frequently Asked Questions</h2>
-                </div>
-                <div class="col-12 col-md-6 mb-4">
-                    <div class="mb-4">
-                        <h4>How quickly will I receive a response?</h4>
-                        <p>We typically respond to all inquiries within 1-2 business days. For urgent matters, please call our office directly.</p>
-                    </div>
-                    <div class="mb-4">
-                        <h4>Do you offer consultations for industrial ventilation?</h4>
-                        <p>Yes, we provide expert consultations to help you determine the best industrial fan solutions for your specific facility needs. Contact us to schedule a consultation.</p>
-                    </div>
-                    <div class="mb-4">
-                        <h4>Can you help with custom fan requirements?</h4>
-                        <p>Absolutely! We work with multiple manufacturers and can help source custom industrial fan solutions for unique facility requirements.</p>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 mb-4">
-                    <div class="mb-4">
-                        <h4>Do you offer installation services?</h4>
-                        <p>While we don't directly install fans, we can connect you with qualified installation professionals in your area who specialize in industrial fan installation.</p>
-                    </div>
-                    <div class="mb-4">
-                        <h4>How can I become an affiliate partner?</h4>
-                        <p>We're always looking for partners who share our passion for industrial ventilation solutions. Please use our contact form and select "Partnership Opportunities" as the subject.</p>
-                    </div>
-                    <div class="mb-4">
-                        <h4>Do you ship internationally?</h4>
-                        <p>We don't directly sell or ship products. As an information resource, we connect you with manufacturers and distributors who may offer international shipping options.</p>
-                    </div>
-                </div>
+            
+            <div class="faq-item">
+                <h3>Do you offer installation services?</h3>
+                <p>We don't directly offer installation services, but we can connect you with certified installers in your area. Contact us with your location and requirements, and we'll help you find the right installation partner.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>How accurate is your airflow simulator?</h3>
+                <p>Our airflow simulator provides a realistic approximation of how different fans will perform in your space. While it's based on manufacturer specifications and fluid dynamics principles, we recommend consulting with an HVAC professional for precise calculations for your specific facility.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>Do you ship internationally?</h3>
+                <p>We don't sell products directly. As an affiliate site, we connect you with manufacturers and retailers who handle shipping. Most of our affiliate partners do ship internationally, but shipping policies vary by retailer.</p>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="footer-logo">
-                        <span class="logo-text text-light">Industrial Fan Insider</span>
-                    </div>
-                    <p class="footer-description">Your trusted source for industrial fan information, reviews, and guides. We help facility managers and business owners find the perfect ventilation solutions.</p>
-                    <div class="footer-social">
-                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-pinterest-p"></i></a>
-                    </div>
-                </div>
-                <div class="col-6 col-md-2 mb-4">
-                    <h4 class="footer-title">Fan Types</h4>
-                    <ul class="footer-links">
-                        <li><a href="fan-types/hvls-fans.html">HVLS Fans</a></li>
-                        <li><a href="fan-types/ceiling-fans.html">Ceiling Fans</a></li>
-                        <li><a href="fan-types/floor-fans.html">Floor Fans</a></li>
-                        <li><a href="fan-types/wall-mounted-fans.html">Wall-Mounted Fans</a></li>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="images/logo-simplified-three-blade.svg" alt="Industrial Fan Insider Logo" class="logo-small">
+                <p>Industrial Fan Insider</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Reviews</h4>
+                    <ul>
+                        <li><a href="#">HVLS Fans</a></li>
+                        <li><a href="#">Ceiling Fans</a></li>
+                        <li><a href="#">Exhaust Fans</a></li>
+                        <li><a href="#">Portable Fans</a></li>
                     </ul>
                 </div>
-                <div class="col-6 col-md-2 mb-4">
-                    <h4 class="footer-title">Industries</h4>
-                    <ul class="footer-links">
-                        <li><a href="industries/warehouses.html">Warehouses</a></li>
-                        <li><a href="industries/manufacturing.html">Manufacturing</a></li>
-                        <li><a href="industries/agriculture.html">Agriculture</a></li>
-                        <li><a href="industries/food-beverage.html">Food & Beverage</a></li>
-                        <li><a href="industries/aviation.html">Aviation</a></li>
+                <div class="footer-column">
+                    <h4>Guides</h4>
+                    <ul>
+                        <li><a href="#">Buying Guides</a></li>
+                        <li><a href="#">Installation Tips</a></li>
+                        <li><a href="#">Maintenance</a></li>
+                        <li><a href="#">Energy Savings</a></li>
                     </ul>
                 </div>
-                <div class="col-6 col-md-2 mb-4">
-                    <h4 class="footer-title">Resources</h4>
-                    <ul class="footer-links">
-                        <li><a href="guides/index.html">Buying Guides</a></li>
-                        <li><a href="resources/roi-calculator.html">ROI Calculator</a></li>
-                        <li><a href="resources/installation-guides.html">Installation Guides</a></li>
-                        <li><a href="blog/index.html">Blog</a></li>
+                <div class="footer-column">
+                    <h4>Industries</h4>
+                    <ul>
+                        <li><a href="#">Warehousing</a></li>
+                        <li><a href="#">Manufacturing</a></li>
+                        <li><a href="#">Agriculture</a></li>
+                        <li><a href="#">Fitness Centers</a></li>
                     </ul>
                 </div>
-                <div class="col-6 col-md-2 mb-4">
-                    <h4 class="footer-title">Company</h4>
-                    <ul class="footer-links">
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="tel:8554857326">(855) HVLSFAN</a></li>
+                        <li><a href="contact.html">Contact Form</a></li>
                         <li><a href="about.html">About Us</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
-                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                        <li><a href="terms-of-use.html">Terms of Use</a></li>
-                        <li><a href="affiliate-disclosure.html">Affiliate Disclosure</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
-            <div class="container">
-                <p>&copy; 2025 Industrial Fan Insider. All Rights Reserved.</p>
-            </div>
+            <p>&copy; 2025 Industrial Fan Insider. All rights reserved.</p>
+            <p class="affiliate-disclosure">This site contains affiliate links. We may earn a commission if you purchase through our links.</p>
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="js/scripts.js"></script>
-    <script src="js/analytics.js"></script>
+    <script>
+        // Contact form submission handler
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const phone = formData.get('phone');
+            const message = formData.get('message');
+            const textConsent = formData.get('text-consent') === 'on';
+            
+            // If user consented to text messages and provided a phone number
+            if (textConsent && phone) {
+                // In a real implementation, this would connect to an SMS API
+                console.log(`Text message would be sent to (855) HVLSFAN with: ${message}`);
+                
+                // For demonstration purposes, show success message
+                alert('Your message has been sent! If you provided consent, you will also receive text updates at the number you provided.');
+            } else {
+                // Regular form submission without texting
+                alert('Your message has been sent! We will get back to you soon.');
+            }
+            
+            // Reset form
+            this.reset();
+        });
+    </script>
 </body>
 </html>

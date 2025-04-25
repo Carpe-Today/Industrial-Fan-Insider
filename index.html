@@ -3,440 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Industrial Fan Insider - Expert Reviews & Guides for HVAC/R Fans</title>
-    <meta name="description" content="Industrial Fan Insider provides expert reviews, buying guides, and industry insights for industrial fans in warehouses, manufacturing, agriculture, and more.">
-    <meta name="content-type" content="homepage">
-    <meta name="industry-focus" content="industrial">
+    <title>Industrial Fan Insider - Expert Reviews & Buying Guides</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="js/scripts.js" defer></script>
+    <script src="js/analytics.js" defer></script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container header-container">
-            <div class="logo">
-                <a href="index.html">
-                    <span class="logo-text">Industrial Fan Insider</span>
-                </a>
-            </div>
-            <nav class="nav">
-                <button class="mobile-nav-toggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <ul class="nav-list">
-                    <li class="nav-item"><a href="index.html" class="nav-link active">Home</a></li>
-                    <li class="nav-item"><a href="fan-types/hvls-fans.html" class="nav-link">Fan Types</a></li>
-                    <li class="nav-item"><a href="reviews/index.html" class="nav-link">Reviews</a></li>
-                    <li class="nav-item"><a href="guides/index.html" class="nav-link">Guides</a></li>
-                    <li class="nav-item"><a href="industries/index.html" class="nav-link">Industries</a></li>
-                    <li class="nav-item"><a href="resources/roi-calculator.html" class="nav-link">ROI Calculator</a></li>
-                    <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-                </ul>
-            </nav>
+    <header>
+        <div class="logo-container">
+            <img src="images/logo-simplified-three-blade.svg" alt="Industrial Fan Insider Logo" class="logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#guides">Guides</a></li>
+                <li><a href="#industries">Industries</a></li>
+                <li><a href="tools/airflow-simulator/index.html">Airflow Simulator</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="contact-info">
+            <p>Call us: <a href="tel:8554857326">(855) HVLSFAN</a></p>
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">Expert Industrial Fan Reviews & Guides</h1>
-                <p class="hero-subtitle">Find the perfect industrial fan solution for your facility with our comprehensive reviews, buying guides, and industry insights.</p>
-                <div>
-                    <a href="guides/hvls-fan-buying-guide.html" class="btn btn-primary btn-lg">Read Buying Guide</a>
-                    <a href="reviews/index.html" class="btn btn-secondary btn-lg">View Fan Reviews</a>
-                </div>
+        <div class="hero-content">
+            <h1>Expert Industrial Fan Reviews & Buying Guides</h1>
+            <p>Find the perfect industrial fan solution for your facility with our comprehensive reviews, buying guides, and interactive airflow simulator.</p>
+            <div class="cta-buttons">
+                <a href="#popular-fans" class="cta-button">View Top Fans</a>
+                <a href="tools/airflow-simulator/index.html" class="cta-button secondary">Try Airflow Simulator</a>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="section features">
-        <div class="container">
-            <h2 class="text-center mb-5">Why Choose Industrial Fan Insider</h2>
-            <div class="row">
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="feature-box">
-                        <div class="feature-icon">
-                            <i class="fas fa-search"></i>
-                        </div>
-                        <h3 class="feature-title">Expert Reviews</h3>
-                        <p>Our team thoroughly tests and evaluates industrial fans to provide you with honest, unbiased reviews that help you make informed decisions.</p>
-                    </div>
+    <section id="popular-fans" class="popular-fans">
+        <h2>Top-Rated Industrial Fans</h2>
+        <div class="fan-grid">
+            <div class="fan-card">
+                <div class="fan-image">
+                    <img src="images/placeholder.jpg" alt="Big Ass Fans Powerfoil X3.0">
                 </div>
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="feature-box">
-                        <div class="feature-icon">
-                            <i class="fas fa-dollar-sign"></i>
-                        </div>
-                        <h3 class="feature-title">ROI Analysis</h3>
-                        <p>We calculate the potential return on investment for each fan, helping you understand the long-term value and energy savings.</p>
-                    </div>
+                <h3>Big Ass Fans Powerfoil X3.0</h3>
+                <div class="rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-text">4.9/5</span>
                 </div>
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="feature-box">
-                        <div class="feature-icon">
-                            <i class="fas fa-industry"></i>
-                        </div>
-                        <h3 class="feature-title">Industry Expertise</h3>
-                        <p>With deep knowledge of various industries, we provide tailored recommendations for your specific facility and ventilation needs.</p>
-                    </div>
+                <p>The industry leader in HVLS fans with exceptional performance and energy efficiency.</p>
+                <a href="#" class="button">Read Review</a>
+            </div>
+            <div class="fan-card">
+                <div class="fan-image">
+                    <img src="images/placeholder.jpg" alt="Hunter Industrial ECO">
                 </div>
+                <h3>Hunter Industrial ECO</h3>
+                <div class="rating">
+                    <span class="stars">★★★★☆</span>
+                    <span class="rating-text">4.7/5</span>
+                </div>
+                <p>A cost-effective HVLS solution with impressive airflow and simple installation.</p>
+                <a href="#" class="button">Read Review</a>
+            </div>
+            <div class="fan-card">
+                <div class="fan-image">
+                    <img src="images/placeholder.jpg" alt="MacroAir AirVolution-D">
+                </div>
+                <h3>MacroAir AirVolution-D</h3>
+                <div class="rating">
+                    <span class="stars">★★★★☆</span>
+                    <span class="rating-text">4.6/5</span>
+                </div>
+                <p>Direct-drive technology with silent operation and excellent energy efficiency.</p>
+                <a href="#" class="button">Read Review</a>
+            </div>
+        </div>
+        <div class="view-all">
+            <a href="#" class="button secondary">View All Fan Reviews</a>
+        </div>
+    </section>
+
+    <section id="guides" class="guides">
+        <h2>Industrial Fan Buying Guides</h2>
+        <div class="guide-grid">
+            <div class="guide-card">
+                <div class="guide-image">
+                    <img src="images/placeholder.jpg" alt="HVLS Fan Buying Guide">
+                </div>
+                <h3>HVLS Fan Buying Guide</h3>
+                <p>Everything you need to know before purchasing a High-Volume, Low-Speed fan for your facility.</p>
+                <a href="#" class="button">Read Guide</a>
+            </div>
+            <div class="guide-card">
+                <div class="guide-image">
+                    <img src="images/placeholder.jpg" alt="Warehouse Ventilation Guide">
+                </div>
+                <h3>Warehouse Ventilation Guide</h3>
+                <p>Learn how to optimize airflow and temperature control in warehouse environments.</p>
+                <a href="#" class="button">Read Guide</a>
+            </div>
+            <div class="guide-card">
+                <div class="guide-image">
+                    <img src="images/placeholder.jpg" alt="Energy Efficiency Guide">
+                </div>
+                <h3>Energy Efficiency Guide</h3>
+                <p>Discover how industrial fans can reduce your facility's energy consumption and costs.</p>
+                <a href="#" class="button">Read Guide</a>
             </div>
         </div>
     </section>
 
-    <!-- Top Rated Fans Section -->
-    <section class="section products bg-light">
-        <div class="container">
-            <h2 class="text-center mb-5">Top Rated Industrial Fans</h2>
-            <div class="row">
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <!-- Image placeholder -->
-                            <div style="height: 200px; background-color: #e9ecef; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-fan fa-3x text-primary"></i>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <h3 class="product-title">Big Ass Fans Powerfoil X3.0</h3>
-                            <div class="product-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                                <span>4.5/5</span>
-                            </div>
-                            <p class="product-description">The Powerfoil X3.0 delivers exceptional airflow for large industrial spaces with its advanced aerodynamic design and energy-efficient motor.</p>
-                            <div class="product-meta">
-                                <span class="product-price">Starting at $3,999</span>
-                                <a href="reviews/big-ass-fans-powerfoil-x3.html" class="btn btn-sm btn-primary">Read Review</a>
-                            </div>
-                        </div>
-                    </div>
+    <section id="industries" class="industries">
+        <h2>Industrial Fan Solutions By Industry</h2>
+        <div class="industry-grid">
+            <div class="industry-card">
+                <div class="industry-icon">
+                    <img src="images/placeholder.jpg" alt="Warehouse Icon">
                 </div>
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <!-- Image placeholder -->
-                            <div style="height: 200px; background-color: #e9ecef; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-fan fa-3x text-primary"></i>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <h3 class="product-title">Hunter Industrial ECO</h3>
-                            <div class="product-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
-                                <span>4.0/5</span>
-                            </div>
-                            <p class="product-description">The Hunter Industrial ECO combines affordability with performance, making it an excellent choice for medium-sized facilities seeking energy efficiency.</p>
-                            <div class="product-meta">
-                                <span class="product-price">Starting at $2,499</span>
-                                <a href="reviews/hunter-industrial-eco.html" class="btn btn-sm btn-primary">Read Review</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <!-- Image placeholder -->
-                            <div style="height: 200px; background-color: #e9ecef; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-fan fa-3x text-primary"></i>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <h3 class="product-title">MacroAir AirVolution-D</h3>
-                            <div class="product-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>4.8/5</span>
-                            </div>
-                            <p class="product-description">The AirVolution-D features a direct-drive motor that eliminates the need for gearboxes, resulting in whisper-quiet operation and minimal maintenance.</p>
-                            <div class="product-meta">
-                                <span class="product-price">Starting at $3,299</span>
-                                <a href="reviews/macroair-airvolution-d.html" class="btn btn-sm btn-primary">Read Review</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <h3>Warehousing</h3>
+                <a href="#" class="button small">Learn More</a>
             </div>
-            <div class="text-center mt-4">
-                <a href="reviews/index.html" class="btn btn-primary">View All Fan Reviews</a>
+            <div class="industry-card">
+                <div class="industry-icon">
+                    <img src="images/placeholder.jpg" alt="Manufacturing Icon">
+                </div>
+                <h3>Manufacturing</h3>
+                <a href="#" class="button small">Learn More</a>
+            </div>
+            <div class="industry-card">
+                <div class="industry-icon">
+                    <img src="images/placeholder.jpg" alt="Agriculture Icon">
+                </div>
+                <h3>Agriculture</h3>
+                <a href="#" class="button small">Learn More</a>
+            </div>
+            <div class="industry-card">
+                <div class="industry-icon">
+                    <img src="images/placeholder.jpg" alt="Gym Icon">
+                </div>
+                <h3>Fitness Centers</h3>
+                <a href="#" class="button small">Learn More</a>
             </div>
         </div>
     </section>
 
-    <!-- Industries Section -->
-    <section class="section industries">
-        <div class="container">
-            <h2 class="text-center mb-5">Fan Solutions By Industry</h2>
-            <div class="row">
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="industry-card">
-                        <!-- Image placeholder -->
-                        <div style="height: 250px; background-color: #343a40; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas fa-warehouse fa-3x text-light"></i>
-                        </div>
-                        <div class="industry-content">
-                            <h3 class="industry-title">Warehouses & Distribution</h3>
-                            <p>Optimize airflow in large storage spaces to improve worker comfort and protect inventory.</p>
-                            <a href="industries/warehouses.html" class="btn btn-sm btn-light">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="industry-card">
-                        <!-- Image placeholder -->
-                        <div style="height: 250px; background-color: #343a40; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas fa-industry fa-3x text-light"></i>
-                        </div>
-                        <div class="industry-content">
-                            <h3 class="industry-title">Manufacturing Facilities</h3>
-                            <p>Maintain comfortable working conditions and manage heat generated by machinery and processes.</p>
-                            <a href="industries/manufacturing.html" class="btn btn-sm btn-light">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="industry-card">
-                        <!-- Image placeholder -->
-                        <div style="height: 250px; background-color: #343a40; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas fa-tractor fa-3x text-light"></i>
-                        </div>
-                        <div class="industry-content">
-                            <h3 class="industry-title">Agriculture</h3>
-                            <p>Improve livestock comfort, reduce heat stress, and enhance crop drying with proper ventilation.</p>
-                            <a href="industries/agriculture.html" class="btn btn-sm btn-light">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center mt-4">
-                <a href="industries/index.html" class="btn btn-primary">Explore All Industries</a>
-            </div>
+    <section class="simulator-promo">
+        <div class="simulator-content">
+            <h2>Try Our Airflow Simulator</h2>
+            <p>See how different industrial fans perform in your specific space with our interactive airflow modeling tool.</p>
+            <a href="tools/airflow-simulator/index.html" class="cta-button">Launch Simulator</a>
+        </div>
+        <div class="simulator-image">
+            <img src="images/placeholder.jpg" alt="Airflow Simulator Preview">
         </div>
     </section>
 
-    <!-- Latest Guides Section -->
-    <section class="section blog">
-        <div class="container">
-            <h2 class="text-center mb-5">Latest Guides & Resources</h2>
-            <div class="row">
-                <div class="col-12 col-md-6 mb-4">
-                    <div class="blog-card">
-                        <div class="blog-image">
-                            <!-- Image placeholder -->
-                            <div style="height: 200px; background-color: #e9ecef; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-book-open fa-3x text-primary"></i>
-                            </div>
-                        </div>
-                        <div class="blog-content">
-                            <h3 class="blog-title">HVLS Fan Buying Guide: Everything You Need to Know</h3>
-                            <div class="blog-meta">
-                                <span><i class="far fa-calendar-alt"></i> April 15, 2025</span>
-                                <span><i class="far fa-user"></i> Industrial Fan Expert</span>
-                            </div>
-                            <p class="blog-excerpt">Discover the key factors to consider when purchasing HVLS fans for your facility, including size, motor type, control options, and more.</p>
-                            <a href="guides/hvls-fan-buying-guide.html" class="btn btn-sm btn-primary">Read Guide</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 mb-4">
-                    <div class="blog-card">
-                        <div class="blog-image">
-                            <!-- Image placeholder -->
-                            <div style="height: 200px; background-color: #e9ecef; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-book-open fa-3x text-primary"></i>
-                            </div>
-                        </div>
-                        <div class="blog-content">
-                            <h3 class="blog-title">Warehouse Ventilation Guide: Optimizing Airflow for Efficiency</h3>
-                            <div class="blog-meta">
-                                <span><i class="far fa-calendar-alt"></i> April 10, 2025</span>
-                                <span><i class="far fa-user"></i> Ventilation Specialist</span>
-                            </div>
-                            <p class="blog-excerpt">Learn how to create an effective ventilation strategy for warehouses that improves air quality, regulates temperature, and reduces energy costs.</p>
-                            <a href="guides/warehouse-ventilation-guide.html" class="btn btn-sm btn-primary">Read Guide</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center mt-4">
-                <a href="guides/index.html" class="btn btn-primary">View All Guides</a>
-            </div>
+    <section class="newsletter">
+        <div class="newsletter-content">
+            <h2>Stay Updated</h2>
+            <p>Subscribe to our newsletter for the latest industrial fan reviews, guides, and industry news.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Your email address" required>
+                <button type="submit" class="button">Subscribe</button>
+            </form>
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="section cta">
-        <div class="container">
-            <h2 class="cta-title">Calculate Your Potential Energy Savings</h2>
-            <p class="cta-description">Use our ROI calculator to estimate how much you could save by implementing industrial fans in your facility. Enter your facility details and discover your potential energy savings.</p>
-            <a href="resources/roi-calculator.html" class="btn btn-accent btn-lg">Try Our ROI Calculator</a>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="section testimonials">
-        <div class="container">
-            <h2 class="text-center mb-5">What Our Readers Say</h2>
-            <div class="row">
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="testimonial-card">
-                        <div class="testimonial-content">
-                            <p>"The comprehensive reviews on Industrial Fan Insider helped us select the perfect HVLS fans for our 100,000 sq ft warehouse. We've seen a 22% reduction in our cooling costs since installation."</p>
-                        </div>
-                        <div class="testimonial-author">
-                            <!-- Avatar placeholder -->
-                            <div style="width: 60px; height: 60px; background-color: #6c757d; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
-                                <i class="fas fa-user text-light"></i>
-                            </div>
-                            <div class="testimonial-info">
-                                <h5>Michael Rodriguez</h5>
-                                <p>Facility Manager, Global Distribution Co.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="testimonial-card">
-                        <div class="testimonial-content">
-                            <p>"As a small manufacturing business owner, I was overwhelmed by the options for industrial ventilation. The buying guides on this site made the decision process simple and straightforward."</p>
-                        </div>
-                        <div class="testimonial-author">
-                            <!-- Avatar placeholder -->
-                            <div style="width: 60px; height: 60px; background-color: #6c757d; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
-                                <i class="fas fa-user text-light"></i>
-                            </div>
-                            <div class="testimonial-info">
-                                <h5>Sarah Johnson</h5>
-                                <p>Owner, Precision Parts Manufacturing</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="testimonial-card">
-                        <div class="testimonial-content">
-                            <p>"The industry-specific recommendations for agricultural applications were spot on. Our dairy barn is now significantly cooler in summer, and our livestock are visibly more comfortable."</p>
-                        </div>
-                        <div class="testimonial-author">
-                            <!-- Avatar placeholder -->
-                            <div style="width: 60px; height: 60px; background-color: #6c757d; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
-                                <i class="fas fa-user text-light"></i>
-                            </div>
-                            <div class="testimonial-info">
-                                <h5>David Thompson</h5>
-                                <p>Owner, Thompson Family Farms</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="images/logo-simplified-three-blade.svg" alt="Industrial Fan Insider Logo" class="logo-small">
+                <p>Industrial Fan Insider</p>
             </div>
-        </div>
-    </section>
-
-    <!-- Newsletter Section -->
-    <section class="section bg-light">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-8 text-center">
-                    <h2 class="mb-4">Stay Updated with Industrial Fan News</h2>
-                    <p class="mb-4">Subscribe to our newsletter to receive the latest industrial fan reviews, guides, and industry insights directly in your inbox.</p>
-                    <form id="newsletter-form" class="mb-3">
-                        <div class="row">
-                            <div class="col-12 col-md-8 mb-3 mb-md-0">
-                                <input type="email" id="newsletter-email" class="form-control" placeholder="Your Email Address" required>
-                            </div>
-                            <div class="col-12 col-md-4">
-                                <button type="submit" class="btn btn-primary w-100">Subscribe</button>
-                            </div>
-                        </div>
-                        <div id="newsletter-error" class="text-danger mt-2 d-none"></div>
-                    </form>
-                    <p class="small text-muted">We respect your privacy. Unsubscribe at any time.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="footer-logo">
-                        <span class="logo-text text-light">Industrial Fan Insider</span>
-                    </div>
-                    <p class="footer-description">Your trusted source for industrial fan information, reviews, and guides. We help facility managers and business owners find the perfect ventilation solutions.</p>
-                    <div class="footer-social">
-                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-pinterest-p"></i></a>
-                    </div>
-                </div>
-                <div class="col-6 col-md-2 mb-4">
-                    <h4 class="footer-title">Fan Types</h4>
-                    <ul class="footer-links">
-                        <li><a href="fan-types/hvls-fans.html">HVLS Fans</a></li>
-                        <li><a href="fan-types/ceiling-fans.html">Ceiling Fans</a></li>
-                        <li><a href="fan-types/floor-fans.html">Floor Fans</a></li>
-                        <li><a href="fan-types/wall-mounted-fans.html">Wall-Mounted Fans</a></li>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Reviews</h4>
+                    <ul>
+                        <li><a href="#">HVLS Fans</a></li>
+                        <li><a href="#">Ceiling Fans</a></li>
+                        <li><a href="#">Exhaust Fans</a></li>
+                        <li><a href="#">Portable Fans</a></li>
                     </ul>
                 </div>
-                <div class="col-6 col-md-2 mb-4">
-                    <h4 class="footer-title">Industries</h4>
-                    <ul class="footer-links">
-                        <li><a href="industries/warehouses.html">Warehouses</a></li>
-                        <li><a href="industries/manufacturing.html">Manufacturing</a></li>
-                        <li><a href="industries/agriculture.html">Agriculture</a></li>
-                        <li><a href="industries/food-beverage.html">Food & Beverage</a></li>
-                        <li><a href="industries/aviation.html">Aviation</a></li>
+                <div class="footer-column">
+                    <h4>Guides</h4>
+                    <ul>
+                        <li><a href="#">Buying Guides</a></li>
+                        <li><a href="#">Installation Tips</a></li>
+                        <li><a href="#">Maintenance</a></li>
+                        <li><a href="#">Energy Savings</a></li>
                     </ul>
                 </div>
-                <div class="col-6 col-md-2 mb-4">
-                    <h4 class="footer-title">Resources</h4>
-                    <ul class="footer-links">
-                        <li><a href="guides/index.html">Buying Guides</a></li>
-                        <li><a href="resources/roi-calculator.html">ROI Calculator</a></li>
-                        <li><a href="resources/installation-guides.html">Installation Guides</a></li>
-                        <li><a href="blog/index.html">Blog</a></li>
+                <div class="footer-column">
+                    <h4>Industries</h4>
+                    <ul>
+                        <li><a href="#">Warehousing</a></li>
+                        <li><a href="#">Manufacturing</a></li>
+                        <li><a href="#">Agriculture</a></li>
+                        <li><a href="#">Fitness Centers</a></li>
                     </ul>
                 </div>
-                <div class="col-6 col-md-2 mb-4">
-                    <h4 class="footer-title">Company</h4>
-                    <ul class="footer-links">
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="tel:8554857326">(855) HVLSFAN</a></li>
+                        <li><a href="contact.html">Contact Form</a></li>
                         <li><a href="about.html">About Us</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
-                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                        <li><a href="terms-of-use.html">Terms of Use</a></li>
-                        <li><a href="affiliate-disclosure.html">Affiliate Disclosure</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
-            <div class="container">
-                <p>&copy; 2025 Industrial Fan Insider. All Rights Reserved.</p>
-            </div>
+            <p>&copy; 2025 Industrial Fan Insider. All rights reserved.</p>
+            <p class="affiliate-disclosure">This site contains affiliate links. We may earn a commission if you purchase through our links.</p>
         </div>
     </footer>
-
-    <!-- Scripts -->
-    <script src="js/scripts.js"></script>
-    <script src="js/analytics.js"></script>
 </body>
 </html>

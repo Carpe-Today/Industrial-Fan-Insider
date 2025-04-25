@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+    <!-- Simulation-Focused Logo with Warehouse and Three-Blade Airfoil Fans -->
+    <defs>
+        <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#1a5276;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#3498db;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="wallGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#ecf0f1;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#bdc3c7;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="floorGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#95a5a6;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#7f8c8d;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="roofGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#34495e;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#2c3e50;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    
+    <!-- Warehouse Structure - Side View -->
+    <g transform="translate(100, 150)">
+        <!-- Warehouse Floor -->
+        <polygon points="0,150 300,150 300,170 0,170" fill="url(#floorGradient)" stroke="#2c3e50" stroke-width="2"/>
+        
+        <!-- Warehouse Back Wall -->
+        <rect x="0" y="50" width="300" height="100" fill="url(#wallGradient)" stroke="#2c3e50" stroke-width="2"/>
+        
+        <!-- Warehouse Roof -->
+        <polygon points="0,50 300,50 250,0 50,0" fill="url(#roofGradient)" stroke="#2c3e50" stroke-width="2"/>
+        
+        <!-- Fan 1 - Left Side (Three-Blade Airfoil, Bottom View) -->
+        <g transform="translate(75, 60)">
+            <!-- Mounting Rod -->
+            <rect x="-2" y="0" width="4" height="15" fill="#7f8c8d" stroke="#2c3e50" stroke-width="1"/>
+            
+            <!-- Fan Housing (Bottom View) -->
+            <circle cx="0" cy="20" r="10" fill="#34495e" stroke="#2c3e50" stroke-width="1.5"/>
+            
+            <!-- Three Airfoil Blades (Bottom View) -->
+            <g transform="translate(0, 20)">
+                <!-- Blade 1 -->
+                <path d="M0,0 C2,-1 25,-8 30,-5 C28,0 25,5 20,5 C15,5 5,2 0,0 Z" fill="url(#blueGradient)" stroke="#2c3e50" stroke-width="0.5" transform="rotate(0 0 0)"/>
+                
+                <!-- Blade 2 -->
+                <path d="M0,0 C2,-1 25,-8 30,-5 C28,0 25,5 20,5 C15,5 5,2 0,0 Z" fill="url(#blueGradient)" stroke="#2c3e50" stroke-width="0.5" transform="rotate(120 0 0)"/>
+                
+                <!-- Blade 3 -->
+                <path d="M0,0 C2,-1 25,-8 30,-5 C28,0 25,5 20,5 C15,5 5,2 0,0 Z" fill="url(#blueGradient)" stroke="#2c3e50" stroke-width="0.5" transform="rotate(240 0 0)"/>
+            </g>
+            
+            <!-- Downward Airflow Visualization -->
+            <path d="M-20,25 C-20,80 -10,120 0,150" fill="none" stroke="#27ae60" stroke-width="2" stroke-dasharray="4,2" opacity="0.7"/>
+            <path d="M0,25 C0,90 0,120 0,150" fill="none" stroke="#27ae60" stroke-width="2" stroke-dasharray="4,2" opacity="0.7"/>
+            <path d="M20,25 C20,80 10,120 0,150" fill="none" stroke="#27ae60" stroke-width="2" stroke-dasharray="4,2" opacity="0.7"/>
+        </g>
+        
+        <!-- Fan 2 - Right Side (Three-Blade Airfoil, Bottom View) -->
+        <g transform="translate(225, 60)">
+            <!-- Mounting Rod -->
+            <rect x="-2" y="0" width="4" height="15" fill="#7f8c8d" stroke="#2c3e50" stroke-width="1"/>
+            
+            <!-- Fan Housing (Bottom View) -->
+            <circle cx="0" cy="20" r="10" fill="#34495e" stroke="#2c3e50" stroke-width="1.5"/>
+            
+            <!-- Three Airfoil Blades (Bottom View) -->
+            <g transform="translate(0, 20)">
+                <!-- Blade 1 -->
+                <path d="M0,0 C2,-1 25,-8 30,-5 C28,0 25,5 20,5 C15,5 5,2 0,0 Z" fill="url(#blueGradient)" stroke="#2c3e50" stroke-width="0.5" transform="rotate(30 0 0)"/>
+                
+                <!-- Blade 2 -->
+                <path d="M0,0 C2,-1 25,-8 30,-5 C28,0 25,5 20,5 C15,5 5,2 0,0 Z" fill="url(#blueGradient)" stroke="#2c3e50" stroke-width="0.5" transform="rotate(150 0 0)"/>
+                
+                <!-- Blade 3 -->
+                <path d="M0,0 C2,-1 25,-8 30,-5 C28,0 25,5 20,5 C15,5 5,2 0,0 Z" fill="url(#blueGradient)" stroke="#2c3e50" stroke-width="0.5" transform="rotate(270 0 0)"/>
+            </g>
+            
+            <!-- Downward Airflow Visualization -->
+            <path d="M-20,25 C-20,80 -10,120 0,150" fill="none" stroke="#27ae60" stroke-width="2" stroke-dasharray="4,2" opacity="0.7"/>
+            <path d="M0,25 C0,90 0,120 0,150" fill="none" stroke="#27ae60" stroke-width="2" stroke-dasharray="4,2" opacity="0.7"/>
+            <path d="M20,25 C20,80 10,120 0,150" fill="none" stroke="#27ae60" stroke-width="2" stroke-dasharray="4,2" opacity="0.7"/>
+        </g>
+        
+        <!-- Floor Airflow Circulation -->
+        <path d="M0,150 C100,140 200,140 300,150" fill="none" stroke="#27ae60" stroke-width="2" stroke-dasharray="4,2" opacity="0.5"/>
+    </g>
+    
+    <!-- Company Name -->
+    <g>
+        <text x="250" y="350" font-family="Arial, sans-serif" font-size="36" font-weight="bold" text-anchor="middle" fill="#2c3e50">INDUSTRIAL FAN</text>
+        <text x="250" y="400" font-family="Arial, sans-serif" font-size="48" font-weight="bold" text-anchor="middle" fill="#3498db">INSIDER</text>
+    </g>
+</svg>

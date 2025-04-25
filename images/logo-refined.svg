@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+    <!-- Refined Industrial Design -->
+    <defs>
+        <linearGradient id="metalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#7f8c8d;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#bdc3c7;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#95a5a6;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#1a5276;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#3498db;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    
+    <!-- Simplified Industrial Gear Border -->
+    <path d="M250,80 
+             L280,88 L305,105 L325,130 L335,160 L335,190
+             L365,198 L390,215 L410,240 L420,270 L420,300
+             L390,308 L365,325 L335,350 L335,380
+             L325,410 L305,435 L280,452 L250,460
+             L220,452 L195,435 L175,410 L165,380 L165,350
+             L135,325 L110,308 L80,300 L80,270
+             L90,240 L110,215 L135,198 L165,190
+             L165,160 L175,130 L195,105 L220,88 Z" 
+          fill="url(#metalGradient)" stroke="#34495e" stroke-width="8"/>
+    
+    <!-- Fan Icon - Bold, Industrial Design -->
+    <g transform="translate(250, 230)">
+        <!-- Fan Blades - Bold, Industrial Design -->
+        <g id="fan-blades">
+            <path d="M0,0 L80,-60 Q50,-20 25,-20 Q0,-20 -30,-60 Z" fill="url(#blueGradient)" transform="rotate(0 0 0)" stroke="#2c3e50" stroke-width="3"/>
+            <path d="M0,0 L80,-60 Q50,-20 25,-20 Q0,-20 -30,-60 Z" fill="url(#blueGradient)" transform="rotate(72 0 0)" stroke="#2c3e50" stroke-width="3"/>
+            <path d="M0,0 L80,-60 Q50,-20 25,-20 Q0,-20 -30,-60 Z" fill="url(#blueGradient)" transform="rotate(144 0 0)" stroke="#2c3e50" stroke-width="3"/>
+            <path d="M0,0 L80,-60 Q50,-20 25,-20 Q0,-20 -30,-60 Z" fill="url(#blueGradient)" transform="rotate(216 0 0)" stroke="#2c3e50" stroke-width="3"/>
+            <path d="M0,0 L80,-60 Q50,-20 25,-20 Q0,-20 -30,-60 Z" fill="url(#blueGradient)" transform="rotate(288 0 0)" stroke="#2c3e50" stroke-width="3"/>
+        </g>
+        
+        <!-- Center Hub - More Industrial -->
+        <circle cx="0" cy="0" r="25" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
+        <circle cx="0" cy="0" r="18" fill="#2c3e50"/>
+        <circle cx="0" cy="0" r="12" fill="#95a5a6"/>
+        <circle cx="0" cy="0" r="6" fill="#7f8c8d"/>
+    </g>
+    
+    <!-- Bold Airflow Lines -->
+    <path d="M250,230 Q330,280 400,230" fill="none" stroke="#27ae60" stroke-width="4" stroke-dasharray="8,4" opacity="0.8"/>
+    <path d="M250,230 Q170,180 100,230" fill="none" stroke="#27ae60" stroke-width="4" stroke-dasharray="8,4" opacity="0.8"/>
+    
+    <!-- Company Name - Strong Industrial Typography -->
+    <g>
+        <text x="250" y="360" font-family="Tahoma, Geneva, sans-serif" font-size="34" font-weight="bold" text-anchor="middle" fill="#ecf0f1">INDUSTRIAL FAN</text>
+        <text x="250" y="405" font-family="Tahoma, Geneva, sans-serif" font-size="52" font-weight="bold" text-anchor="middle" fill="#3498db">INSIDER</text>
+    </g>
+</svg>

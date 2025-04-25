@@ -6,13 +6,13 @@ document.addEventListener('DOMContentLoaded', function() {
   // Google Analytics 4 tracking code
   var gaScript = document.createElement('script');
   gaScript.async = true;
-  gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-G08Q4SX3WL'; // Replace with actual GA4 ID when available
+  gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX'; // Replace with actual GA4 ID when available
   document.head.appendChild(gaScript);
 
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-G08Q4SX3WL'); // Replace with actual GA4 ID when available
+  gtag('config', 'G-XXXXXXXXXX'); // Replace with actual GA4 ID when available
 
   // Enhanced e-commerce tracking for affiliate links
   document.querySelectorAll('a[data-affiliate]').forEach(function(link) {
