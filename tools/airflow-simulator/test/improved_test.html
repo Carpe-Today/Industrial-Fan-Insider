@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airflow Simulator Test - Industrial Fan Insider</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .test-controls {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 20px;
+        }
+        .test-section h2 {
+            margin-top: 0;
+            color: #444;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #simulator-canvas {
+            width: 100%;
+            height: 600px;
+            background-color: #000;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .loading-overlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Airflow Simulator Test - Improved Fan Visualization</h1>
+        
+        <div class="test-controls">
+            <div class="test-section">
+                <h2>Fan Visualization Test</h2>
+                <p>Test the improved fan visualization with different views and parameters.</p>
+                
+                <div class="button-group">
+                    <button id="view-top">Top View</button>
+                    <button id="view-side">Side View</button>
+                    <button id="view-3d">3D View</button>
+                </div>
+            </div>
+            
+            <div class="test-section">
+                <h2>Room Configuration</h2>
+                <div>
+                    <label for="room-length">Room Length (ft)</label>
+                    <input type="number" id="room-length" value="50" min="10" max="200">
+                </div>
+                <div>
+                    <label for="room-width">Room Width (ft)</label>
+                    <input type="number" id="room-width" value="50" min="10" max="200">
+                </div>
+                <div>
+                    <label for="room-height">Ceiling Height (ft)</label>
+                    <input type="number" id="room-height" value="20" min="8" max="50">
+                </div>
+            </div>
+            
+            <div class="test-section">
+                <h2>Fan Configuration</h2>
+                <div>
+                    <label for="fan-model">Fan Model</label>
+                    <select id="fan-model">
+                        <option value="powerfoil-x3">Big Ass Fans Powerfoil X3.0</option>
+                        <option value="hunter-eco">Hunter Industrial ECO</option>
+                        <option value="macroair">MacroAir AirVolution-D</option>
+                        <option value="custom">Custom Fan</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="fan-diameter">Fan Diameter (ft)</label>
+                    <input type="number" id="fan-diameter" value="14" min="8" max="24">
+                </div>
+                <div>
+                    <label for="fan-cfm">Fan CFM</label>
+                    <input type="number" id="fan-cfm" value="300000" min="50000" max="500000">
+                </div>
+                <div>
+                    <label for="fan-rpm">Fan RPM</label>
+                    <input type="number" id="fan-rpm" value="50" min="10" max="100">
+                </div>
+                <div>
+                    <label for="fan-direction">Fan Direction</label>
+                    <select id="fan-direction">
+                        <option value="down">Downward</option>
+                        <option value="up">Upward</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="fan-x">Fan X Position (ft)</label>
+                    <input type="number" id="fan-x" value="25" min="0" max="50">
+                </div>
+                <div>
+                    <label for="fan-y">Fan Y Position (ft)</label>
+                    <input type="number" id="fan-y" value="25" min="0" max="50">
+                </div>
+                <div>
+                    <label for="fan-height">Fan Height (ft)</label>
+                    <input type="number" id="fan-height" value="18" min="0" max="20">
+                </div>
+            </div>
+            
+            <div class="test-section">
+                <h2>Visualization Parameters</h2>
+                <div>
+                    <label for="particle-density">Particle Density</label>
+                    <select id="particle-density">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button id="update-simulation">Update Simulation</button>
+                <button id="play-pause">Pause</button>
+                <button id="reset">Reset</button>
+            </div>
+        </div>
+        
+        <canvas id="simulator-canvas"></canvas>
+        
+        <div id="loading-overlay" class="loading-overlay">
+            <div>Loading simulation...</div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="../js/simulator.js"></script>
+</body>
+</html>
