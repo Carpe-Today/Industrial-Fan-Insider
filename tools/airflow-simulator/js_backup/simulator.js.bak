@@ -56,32 +56,28 @@ const fanModels = {
         maxDiameter: 24,
         maxCFM: 350000,
         powerConsumption: 1.2, // kW
-        color: 0x3498db,
-        bladeCount: 3
+        color: 0x3498db
     },
     'hunter-eco': {
         name: 'Hunter Industrial ECO',
         maxDiameter: 14,
         maxCFM: 160000,
         powerConsumption: 0.75, // kW
-        color: 0x2ecc71,
-        bladeCount: 5
+        color: 0x2ecc71
     },
     'macroair': {
         name: 'MacroAir AirVolution-D',
         maxDiameter: 20,
         maxCFM: 240000,
         powerConsumption: 1.0, // kW
-        color: 0xe74c3c,
-        bladeCount: 6
+        color: 0xe74c3c
     },
     'custom': {
         name: 'Custom Fan',
         maxDiameter: 24,
         maxCFM: 400000,
         powerConsumption: 1.5, // kW
-        color: 0xf39c12,
-        bladeCount: 3
+        color: 0xf39c12
     }
 };
 
@@ -273,7 +269,7 @@ function createRoom() {
     scene.add(room);
 }
 
-// Create the fan - COMPLETELY REWRITTEN for proper horizontal orientation
+// Create the fan
 function createFan() {
     // Remove existing fan if any
     if (fan) {
@@ -288,77 +284,44 @@ function createFan() {
     const y = params.fanHeight / 10;
     const z = params.fanY / 10;
     
-    // Fan model color and blade count
+    // Fan model color
     const fanColor = fanModels[params.fanModel].color;
-    const bladeCount = fanModels[params.fanModel].bladeCount;
     
-    // Create drop tube (vertical mounting tube)
-    const dropTubeGeometry = new THREE.CylinderGeometry(diameter/20, diameter/20, diameter/2, 16);
-    const dropTubeMaterial = new THREE.MeshStandardMaterial({ color: 0x666666 });
-    const dropTube = new THREE.Mesh(dropTubeGeometry, dropTubeMaterial);
-    dropTube.castShadow = true;
-    fan.add(dropTube);
-    
-    // Create hub (central connection point for blades)
-    const hubGeometry = new THREE.CylinderGeometry(diameter/8, diameter/8, diameter/10, 16);
-    const hubMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
-    const hub = new THREE.Mesh(hubGeometry, hubMaterial);
-    hub.rotation.x = Math.PI / 2; // Rotate to horizontal position
-    hub.castShadow = true;
-    fan.add(hub);
-    
-    // Create motor housing
-    const motorGeometry = new THREE.CylinderGeometry(diameter/6, diameter/6, diameter/5, 16);
-    const motorMaterial = new THREE.MeshStandardMaterial({ color: 0x444444 });
-    const motor = new THREE.Mesh(motorGeometry, motorMaterial);
-    motor.rotation.x = Math.PI / 2; // Rotate to horizontal position
-    motor.position.y = -diameter/10; // Position below hub
-    motor.castShadow = true;
-    fan.add(motor);
+    // Create fan body
+    const bodyGeometry = new THREE.CylinderGeometry(diameter/10, diameter/10, diameter/5, 16);
+    const bodyMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
+    const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+    body.castShadow = true;
+    fan.add(body);
     
     // Create fan blades
+    const bladeCount = 6;
+    const bladeGeometry = new THREE.BoxGeometry(diameter/2, diameter/40, diameter/8);
+    const bladeMaterial = new THREE.MeshStandardMaterial({ color: fanColor });
+    
     for (let i = 0; i < bladeCount; i++) {
-        // Create blade shape - tapered for better aerodynamics
-        const bladeShape = new THREE.Shape();
-        bladeShape.moveTo(0, 0);
-        bladeShape.lineTo(diameter/2, -diameter/16);
-        bladeShape.lineTo(diameter/2, diameter/16);
-        bladeShape.lineTo(0, 0);
-        
-        const extrudeSettings = {
-            steps: 1,
-            depth: diameter/40,
-            bevelEnabled: true,
-            bevelThickness: diameter/100,
-            bevelSize: diameter/100,
-            bevelOffset: 0,
-            bevelSegments: 3
-        };
-        
-        const bladeGeometry = new THREE.ExtrudeGeometry(bladeShape, extrudeSettings);
-        const bladeMaterial = new THREE.MeshStandardMaterial({ 
-            color: fanColor,
-            roughness: 0.7,
-            metalness: 0.3
-        });
-        
         const blade = new THREE.Mesh(bladeGeometry, bladeMaterial);
-        
-        // Position and rotate blade to attach to hub
-        blade.position.z = -diameter/80; // Center the blade depth
-        blade.rotation.z = (i / bladeCount) * Math.PI * 2; // Distribute blades evenly
+        blade.position.x = diameter/4;
+        blade.rotation.y = (i / bladeCount) * Math.PI * 2;
         blade.castShadow = true;
-        
-        // Add blade to hub
-        hub.add(blade);
+        body.add(blade);
     }
     
-    // Position fan in the room
+    // Create mounting bracket
+    const bracketGeometry = new THREE.CylinderGeometry(diameter/20, diameter/20, diameter/2, 8);
+    const bracketMaterial = new THREE.MeshStandardMaterial({ color: 0x666666 });
+    const bracket = new THREE.Mesh(bracketGeometry, bracketMaterial);
+    bracket.position.y = diameter/4;
+    bracket.rotation.x = Math.PI / 2;
+    bracket.castShadow = true;
+    fan.add(bracket);
+    
+    // Position fan
     fan.position.set(x, y, z);
     
-    // Rotate fan based on direction (default is downward airflow)
+    // Rotate fan based on direction
     if (params.fanDirection === 'up') {
-        hub.rotation.y = Math.PI; // Flip blades to point upward
+        fan.rotation.x = Math.PI;
     }
     
     scene.add(fan);
@@ -438,10 +401,7 @@ function animateParticles() {
     // Update fan rotation based on RPM
     if (fan) {
         const rotationSpeed = params.fanRPM / 60 * Math.PI * 2 / 30; // Convert RPM to radians per frame
-        // Find the hub (second child of fan group) and rotate it
-        if (fan.children.length > 1) {
-            fan.children[1].rotation.z += rotationSpeed; // Rotate around z-axis for horizontal fan
-        }
+        fan.children[0].rotation.y += rotationSpeed;
     }
     
     // Update each particle
@@ -525,9 +485,34 @@ function animateParticles() {
             particle.userData.maxLifecycle = 100 + Math.random() * 100;
         }
         
-        // Update geometry
+        // Update particle color based on height (temperature gradient)
+        const heightRatio = position.array[1] / roomHeight;
+        const color = new THREE.Color();
+        if (params.fanDirection === 'down') {
+            // Blue (cool) at top, red (warm) at bottom
+            color.setHSL(0.6 - heightRatio * 0.6, 1, 0.5);
+        } else {
+            // Red (warm) at top, blue (cool) at bottom
+            color.setHSL(heightRatio * 0.6, 1, 0.5);
+        }
+        particle.material.color = color;
+        
+        // Mark position attribute as needing update
         position.needsUpdate = true;
     }
+}
+
+// Animation loop
+function animate() {
+    if (!isPlaying) return;
+    
+    animationId = requestAnimationFrame(animate);
+    
+    // Animate particles
+    animateParticles();
+    
+    // Render scene
+    renderer.render(scene, camera);
 }
 
 // Set camera position based on view
@@ -551,212 +536,316 @@ function setCamera(view) {
             camera.lookAt(roomLength/2, roomHeight/2, roomWidth/2);
             break;
     }
-    
-    currentView = view;
-    
-    // Update view buttons
-    document.getElementById('view-top').classList.remove('active');
-    document.getElementById('view-side').classList.remove('active');
-    document.getElementById('view-3d').classList.remove('active');
-    document.getElementById('view-' + view).classList.add('active');
-}
-
-// Animation loop
-function animate() {
-    animationId = requestAnimationFrame(animate);
-    
-    if (isPlaying) {
-        // Animate particles
-        animateParticles();
-    }
-    
-    // Render scene
-    renderer.render(scene, camera);
-    
-    // Update stats if available
-    if (stats) {
-        stats.update();
-    }
 }
 
 // Calculate simulation results
 function calculateResults() {
-    // Calculate coverage area
-    params.coverageArea = Math.PI * Math.pow(params.fanDiameter * 1.5, 2);
+    // Calculate coverage area (sq ft)
+    params.coverageArea = Math.PI * Math.pow(params.fanDiameter * 2, 2);
     
     // Calculate air changes per hour
-    const roomVolume = params.roomLength * params.roomWidth * params.roomHeight;
+    const roomVolume = params.roomLength * params.roomWidth * params.roomHeight; // cubic feet
     params.airChanges = (params.fanCFM * 60) / roomVolume;
     
-    // Calculate energy usage
-    const model = fanModels[params.fanModel];
-    params.energyUsage = model.powerConsumption * (params.fanRPM / 70); // Adjust based on RPM
+    // Calculate energy usage (kW/h)
+    params.energyUsage = fanModels[params.fanModel].powerConsumption;
     
-    // Calculate cooling effect (perceived temperature reduction)
-    params.coolingEffect = 4 * (params.fanDiameter / 20) * (params.fanRPM / 50);
+    // Calculate cooling effect (°F)
+    // This is a simplified model - actual cooling effect depends on many factors
+    const coverageRatio = Math.min(params.coverageArea / (params.roomLength * params.roomWidth), 1);
+    params.coolingEffect = 10 * coverageRatio * (params.fanRPM / 100);
 }
 
-// Update results UI
+// Update UI with simulation results
 function updateResultsUI() {
-    document.getElementById('result-coverage').textContent = Math.round(params.coverageArea) + ' sq ft';
-    document.getElementById('result-air-changes').textContent = params.airChanges.toFixed(1) + ' ACH';
-    document.getElementById('result-energy').textContent = params.energyUsage.toFixed(2) + ' kW';
-    document.getElementById('result-cooling').textContent = params.coolingEffect.toFixed(1) + '°F';
+    document.getElementById('coverage-area').textContent = Math.round(params.coverageArea) + ' sq ft';
+    document.getElementById('air-changes').textContent = params.airChanges.toFixed(1);
+    document.getElementById('energy-usage').textContent = params.energyUsage.toFixed(1) + ' kW/h';
+    document.getElementById('cooling-effect').textContent = params.coolingEffect.toFixed(1) + '°F';
+    
+    // Update observations
+    const observations = document.getElementById('simulation-observations');
+    observations.innerHTML = '';
+    
+    // Add observations based on results
+    const roomArea = params.roomLength * params.roomWidth;
+    const coverageRatio = params.coverageArea / roomArea;
+    
+    let observationItems = [];
+    
+    if (coverageRatio < 0.3) {
+        observationItems.push('The fan provides limited coverage for this room size');
+    } else if (coverageRatio < 0.7) {
+        observationItems.push('The fan provides good coverage for the central area of the room');
+    } else {
+        observationItems.push('The fan provides excellent coverage for most of the room');
+    }
+    
+    if (params.airChanges < 3) {
+        observationItems.push('Air circulation is below recommended levels for industrial spaces');
+    } else if (params.airChanges < 6) {
+        observationItems.push('Air circulation is adequate for most industrial applications');
+    } else {
+        observationItems.push('Air circulation is excellent, exceeding recommended levels');
+    }
+    
+    if (params.fanHeight < params.roomHeight * 0.6) {
+        observationItems.push('Fan height is lower than optimal, consider raising it for better circulation');
+    }
+    
+    if (Math.abs(params.fanX - params.roomLength/2) > params.roomLength * 0.3 || 
+        Math.abs(params.fanY - params.roomWidth/2) > params.roomWidth * 0.3) {
+        observationItems.push('Fan is positioned away from room center, which may create uneven airflow');
+    }
+    
+    observationItems.push(`The current setup achieves approximately ${params.airChanges.toFixed(1)} air changes per hour`);
+    observationItems.push(`Estimated cooling effect is approximately ${params.coolingEffect.toFixed(1)}°F (perceived temperature reduction)`);
+    
+    // Add observations to UI
+    observationItems.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        observations.appendChild(li);
+    });
+    
+    // Update recommended fans
+    updateRecommendedFans();
 }
 
-// Get canvas aspect ratio
+// Update recommended fans based on room size
+function updateRecommendedFans() {
+    const recommendedFansDiv = document.querySelector('.recommended-fans');
+    recommendedFansDiv.innerHTML = '';
+    
+    const roomArea = params.roomLength * params.roomWidth;
+    
+    // Determine best fan models based on room size
+    let recommendations = [];
+    
+    if (roomArea < 2500) {
+        recommendations.push({
+            model: 'hunter-eco',
+            reason: 'Ideal for smaller spaces'
+        });
+        recommendations.push({
+            model: 'macroair',
+            reason: 'Provides excellent coverage for this room size'
+        });
+    } else if (roomArea < 5000) {
+        recommendations.push({
+            model: 'powerfoil-x3',
+            reason: 'Ideal for your space configuration'
+        });
+        recommendations.push({
+            model: 'macroair',
+            reason: 'Energy-efficient alternative'
+        });
+    } else {
+        recommendations.push({
+            model: 'powerfoil-x3',
+            reason: 'Powerful option for large spaces'
+        });
+        recommendations.push({
+            model: 'custom',
+            reason: 'Maximum coverage for large facilities'
+        });
+    }
+    
+    // Create recommendation elements
+    recommendations.forEach(rec => {
+        const fanModel = fanModels[rec.model];
+        const div = document.createElement('div');
+        div.className = 'recommended-fan-item mb-3';
+        div.innerHTML = `
+            <h4 class="h5">${fanModel.name}</h4>
+            <p class="small mb-2">${rec.reason}</p>
+            <a href="../../reviews/${rec.model.replace('-', '-')}.html" class="btn btn-sm btn-outline-primary">View Review</a>
+            <a href="https://www.amazon.com/dp/B07XYZ${Math.random().toString(36).substring(2, 7).toUpperCase()}" class="btn btn-sm btn-primary" target="_blank" rel="nofollow noopener">Buy Now</a>
+        `;
+        recommendedFansDiv.appendChild(div);
+    });
+}
+
+// Helper functions
 function getAspectRatio() {
-    const canvas = document.getElementById('simulator-canvas');
-    return canvas.clientWidth / canvas.clientHeight;
+    return getCanvasWidth() / getCanvasHeight();
 }
 
-// Get canvas width
 function getCanvasWidth() {
-    const canvas = document.getElementById('simulator-canvas');
-    return canvas.clientWidth;
+    return document.getElementById('simulator-canvas-container').clientWidth;
 }
 
-// Get canvas height
 function getCanvasHeight() {
-    const canvas = document.getElementById('simulator-canvas');
-    return canvas.clientHeight;
+    return document.getElementById('simulator-canvas-container').clientHeight;
 }
 
-// Add event listeners
+// Event listeners
 function addEventListeners() {
+    // Run simulation button
+    document.getElementById('run-simulation').addEventListener('click', function() {
+        // Stop current animation
+        if (animationId) {
+            cancelAnimationFrame(animationId);
+        }
+        
+        // Reinitialize simulation
+        init();
+    });
+    
+    // Reset simulation button
+    document.getElementById('reset-simulation').addEventListener('click', function() {
+        // Reset form to default values
+        document.getElementById('room-length').value = 50;
+        document.getElementById('room-width').value = 50;
+        document.getElementById('room-height').value = 20;
+        document.getElementById('fan-model').value = 'powerfoil-x3';
+        document.getElementById('fan-diameter').value = 14;
+        document.getElementById('fan-cfm').value = 300000;
+        document.getElementById('fan-rpm').value = 50;
+        document.getElementById('fan-direction').value = 'down';
+        document.getElementById('fan-x').value = 25;
+        document.getElementById('fan-y').value = 25;
+        document.getElementById('fan-height').value = 18;
+        document.getElementById('particle-density').value = 'medium';
+        
+        // Run simulation with default values
+        document.getElementById('run-simulation').click();
+    });
+    
     // View buttons
-    document.getElementById('view-top').addEventListener('click', () => setCamera('top'));
-    document.getElementById('view-side').addEventListener('click', () => setCamera('side'));
-    document.getElementById('view-3d').addEventListener('click', () => setCamera('3d'));
+    document.getElementById('view-top').addEventListener('click', function() {
+        currentView = 'top';
+        setCamera(currentView);
+        
+        // Update active button
+        document.querySelectorAll('.view-controls button').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+    });
+    
+    document.getElementById('view-side').addEventListener('click', function() {
+        currentView = 'side';
+        setCamera(currentView);
+        
+        // Update active button
+        document.querySelectorAll('.view-controls button').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+    });
+    
+    document.getElementById('view-3d').addEventListener('click', function() {
+        currentView = '3d';
+        setCamera(currentView);
+        
+        // Update active button
+        document.querySelectorAll('.view-controls button').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+    });
     
     // Play/pause button
-    document.getElementById('play-pause').addEventListener('click', togglePlayPause);
+    document.getElementById('play-pause').addEventListener('click', function() {
+        isPlaying = !isPlaying;
+        
+        // Update button icon
+        this.innerHTML = isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
+        
+        // Start or stop animation
+        if (isPlaying) {
+            animate();
+        } else if (animationId) {
+            cancelAnimationFrame(animationId);
+        }
+    });
     
-    // Reset button
-    document.getElementById('reset').addEventListener('click', resetSimulation);
+    // Fullscreen button
+    document.getElementById('fullscreen').addEventListener('click', function() {
+        const container = document.getElementById('simulator-canvas-container');
+        
+        if (!document.fullscreenElement) {
+            container.requestFullscreen().catch(err => {
+                console.error(`Error attempting to enable fullscreen: ${err.message}`);
+            });
+        } else {
+            document.exitFullscreen();
+        }
+    });
     
-    // Room dimension inputs
-    document.getElementById('room-length').addEventListener('change', updateSimulation);
-    document.getElementById('room-width').addEventListener('change', updateSimulation);
-    document.getElementById('room-height').addEventListener('change', updateSimulation);
+    // Save image button
+    document.getElementById('save-image').addEventListener('click', function() {
+        const canvas = document.getElementById('simulator-canvas');
+        const link = document.createElement('a');
+        link.download = 'industrial-fan-simulation.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    });
     
-    // Fan parameter inputs
-    document.getElementById('fan-model').addEventListener('change', updateFanModel);
-    document.getElementById('fan-diameter').addEventListener('change', updateSimulation);
-    document.getElementById('fan-cfm').addEventListener('change', updateSimulation);
-    document.getElementById('fan-rpm').addEventListener('change', updateSimulation);
-    document.getElementById('fan-direction').addEventListener('change', updateSimulation);
-    document.getElementById('fan-x').addEventListener('change', updateSimulation);
-    document.getElementById('fan-y').addEventListener('change', updateSimulation);
-    document.getElementById('fan-height').addEventListener('change', updateSimulation);
+    // Share simulation button
+    document.getElementById('share-simulation').addEventListener('click', function() {
+        // Create URL with parameters
+        const baseUrl = window.location.href.split('?')[0];
+        const params = new URLSearchParams();
+        params.append('roomLength', document.getElementById('room-length').value);
+        params.append('roomWidth', document.getElementById('room-width').value);
+        params.append('roomHeight', document.getElementById('room-height').value);
+        params.append('fanModel', document.getElementById('fan-model').value);
+        params.append('fanDiameter', document.getElementById('fan-diameter').value);
+        params.append('fanCFM', document.getElementById('fan-cfm').value);
+        params.append('fanRPM', document.getElementById('fan-rpm').value);
+        params.append('fanDirection', document.getElementById('fan-direction').value);
+        params.append('fanX', document.getElementById('fan-x').value);
+        params.append('fanY', document.getElementById('fan-y').value);
+        params.append('fanHeight', document.getElementById('fan-height').value);
+        
+        const shareUrl = `${baseUrl}?${params.toString()}`;
+        
+        // Copy to clipboard
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            alert('Simulation URL copied to clipboard!');
+        }).catch(err => {
+            console.error('Could not copy URL: ', err);
+            alert('Could not copy URL. Please copy this manually:\n\n' + shareUrl);
+        });
+    });
     
-    // Visualization parameter inputs
-    document.getElementById('particle-density').addEventListener('change', updateParticles);
+    // Fan model selection change
+    document.getElementById('fan-model').addEventListener('change', function() {
+        const model = fanModels[this.value];
+        
+        // Update max values
+        document.getElementById('fan-diameter').max = model.maxDiameter;
+        document.getElementById('fan-cfm').max = model.maxCFM;
+        
+        // If current values exceed max, adjust them
+        if (parseFloat(document.getElementById('fan-diameter').value) > model.maxDiameter) {
+            document.getElementById('fan-diameter').value = model.maxDiameter;
+        }
+        
+        if (parseFloat(document.getElementById('fan-cfm').value) > model.maxCFM) {
+            document.getElementById('fan-cfm').value = model.maxCFM;
+        }
+    });
     
     // Window resize event
-    window.addEventListener('resize', onWindowResize);
-}
-
-// Toggle play/pause
-function togglePlayPause() {
-    isPlaying = !isPlaying;
+    window.addEventListener('resize', function() {
+        camera.aspect = getAspectRatio();
+        camera.updateProjectionMatrix();
+        renderer.setSize(getCanvasWidth(), getCanvasHeight());
+    });
     
-    const button = document.getElementById('play-pause');
-    if (isPlaying) {
-        button.innerHTML = '<i class="fas fa-pause"></i>';
-        button.setAttribute('title', 'Pause Simulation');
-    } else {
-        button.innerHTML = '<i class="fas fa-play"></i>';
-        button.setAttribute('title', 'Play Simulation');
+    // Check for URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('roomLength')) {
+        // Set form values from URL parameters
+        document.getElementById('room-length').value = urlParams.get('roomLength');
+        document.getElementById('room-width').value = urlParams.get('roomWidth');
+        document.getElementById('room-height').value = urlParams.get('roomHeight');
+        document.getElementById('fan-model').value = urlParams.get('fanModel');
+        document.getElementById('fan-diameter').value = urlParams.get('fanDiameter');
+        document.getElementById('fan-cfm').value = urlParams.get('fanCFM');
+        document.getElementById('fan-rpm').value = urlParams.get('fanRPM');
+        document.getElementById('fan-direction').value = urlParams.get('fanDirection');
+        document.getElementById('fan-x').value = urlParams.get('fanX');
+        document.getElementById('fan-y').value = urlParams.get('fanY');
+        document.getElementById('fan-height').value = urlParams.get('fanHeight');
     }
-}
-
-// Reset simulation
-function resetSimulation() {
-    // Reset parameters to defaults
-    params.roomLength = 50;
-    params.roomWidth = 50;
-    params.roomHeight = 20;
-    params.fanModel = 'powerfoil-x3';
-    params.fanDiameter = 14;
-    params.fanCFM = 300000;
-    params.fanRPM = 50;
-    params.fanDirection = 'down';
-    params.fanX = 25;
-    params.fanY = 25;
-    params.fanHeight = 18;
-    params.particleDensity = 'medium';
-    
-    // Update UI inputs
-    document.getElementById('room-length').value = params.roomLength;
-    document.getElementById('room-width').value = params.roomWidth;
-    document.getElementById('room-height').value = params.roomHeight;
-    document.getElementById('fan-model').value = params.fanModel;
-    document.getElementById('fan-diameter').value = params.fanDiameter;
-    document.getElementById('fan-cfm').value = params.fanCFM;
-    document.getElementById('fan-rpm').value = params.fanRPM;
-    document.getElementById('fan-direction').value = params.fanDirection;
-    document.getElementById('fan-x').value = params.fanX;
-    document.getElementById('fan-y').value = params.fanY;
-    document.getElementById('fan-height').value = params.fanHeight;
-    document.getElementById('particle-density').value = params.particleDensity;
-    
-    // Update simulation
-    updateSimulation();
-}
-
-// Update simulation
-function updateSimulation() {
-    // Get parameters from UI
-    updateParamsFromUI();
-    
-    // Update room
-    createRoom();
-    
-    // Update fan
-    createFan();
-    
-    // Update particles
-    createParticles();
-    
-    // Calculate results
-    calculateResults();
-    
-    // Update results UI
-    updateResultsUI();
-}
-
-// Update fan model
-function updateFanModel() {
-    // Get selected model
-    const modelKey = document.getElementById('fan-model').value;
-    const model = fanModels[modelKey];
-    
-    // Update fan parameters based on model
-    document.getElementById('fan-diameter').value = model.maxDiameter / 2;
-    document.getElementById('fan-cfm').value = model.maxCFM / 2;
-    
-    // Update simulation
-    updateSimulation();
-}
-
-// Update particles
-function updateParticles() {
-    // Get particle density
-    params.particleDensity = document.getElementById('particle-density').value;
-    
-    // Update particles
-    createParticles();
-}
-
-// Handle window resize
-function onWindowResize() {
-    // Update camera aspect ratio
-    camera.aspect = getAspectRatio();
-    camera.updateProjectionMatrix();
-    
-    // Update renderer size
-    renderer.setSize(getCanvasWidth(), getCanvasHeight());
 }
 
 // Initialize simulation when page loads
