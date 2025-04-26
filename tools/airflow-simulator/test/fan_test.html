@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fan Visualization Test</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+        .controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        button {
+            margin: 5px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <h3>Fan Visualization Test</h3>
+        <button id="rotate-x">Rotate X</button>
+        <button id="rotate-y">Rotate Y</button>
+        <button id="rotate-z">Rotate Z</button>
+        <button id="reset">Reset View</button>
+        <div id="info">
+            <p>Testing perfect horizontal alignment and blade symmetry</p>
+        </div>
+    </div>
+    
+    <div id="simulator-canvas-container" style="width: 100%; height: 100vh;">
+        <canvas id="simulator-canvas"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <script>
+        // Global variables
+        let scene, camera, renderer, fan, blades = [];
+        let controls;
+
+        // Initialize the test
+        function init() {
+            // Create scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x111111);
+            
+            // Create camera
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(10, 10, 10);
+            camera.lookAt(0, 0, 0);
+            
+            // Create renderer
+            renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('simulator-canvas'), antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            
+            // Add lights
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(10, 20, 15);
+            scene.add(directionalLight);
+            
+            // Add grid for reference
+            const gridHelper = new THREE.GridHelper(20, 20);
+            scene.add(gridHelper);
+            
+            // Add axes helper
+            const axesHelper = new THREE.AxesHelper(5);
+            scene.add(axesHelper);
+            
+            // Create fan
+            createFan();
+            
+            // Add orbit controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            
+            // Add event listeners
+            window.addEventListener('resize', onWindowResize);
+            document.getElementById('rotate-x').addEventListener('click', () => rotateFan('x'));
+            document.getElementById('rotate-y').addEventListener('click', () => rotateFan('y'));
+            document.getElementById('rotate-z').addEventListener('click', () => rotateFan('z'));
+            document.getElementById('reset').addEventListener('click', resetFan);
+            
+            // Start animation
+            animate();
+        }
+
+        // Create the fan with perfect horizontal orientation and symmetrical blades
+        function createFan() {
+            // Remove existing fan if any
+            if (fan) {
+                scene.remove(fan);
+            }
+            
+            // Clear blades array
+            blades = [];
+            
+            // Create fan group
+            fan = new THREE.Group();
+            
+            // Create drop tube (vertical mounting pole)
+            const tubeMaterial = new THREE.MeshPhongMaterial({ color: 0x888888 });
+            const tubeGeometry = new THREE.CylinderGeometry(0.15, 0.15, 5, 16);
+            const tube = new THREE.Mesh(tubeGeometry, tubeMaterial);
+            // Position tube exactly vertical
+            tube.rotation.set(0, 0, 0);
+            tube.position.set(0, 2.5, 0);
+            fan.add(tube);
+            
+            // Create hub (central part where blades attach)
+            const hubMaterial = new THREE.MeshPhongMaterial({ color: 0x444444 });
+            const hubGeometry = new THREE.CylinderGeometry(0.8, 0.8, 0.5, 32);
+            const hub = new THREE.Mesh(hubGeometry, hubMaterial);
+            // Ensure hub is perfectly horizontal (90 degrees to the tube)
+            hub.rotation.x = Math.PI / 2;
+            hub.rotation.y = 0;
+            hub.rotation.z = 0;
+            hub.position.set(0, 0, 0);
+            fan.add(hub);
+            
+            // Create motor housing
+            const motorMaterial = new THREE.MeshPhongMaterial({ color: 0x222222 });
+            const motorGeometry = new THREE.CylinderGeometry(0.6, 0.6, 0.8, 32);
+            const motor = new THREE.Mesh(motorGeometry, motorMaterial);
+            // Ensure motor is perfectly horizontal
+            motor.rotation.x = Math.PI / 2;
+            motor.rotation.y = 0;
+            motor.rotation.z = 0;
+            motor.position.set(0, 0.65, 0);
+            fan.add(motor);
+            
+            // Create connection between hub and tube
+            const connectorMaterial = new THREE.MeshPhongMaterial({ color: 0x666666 });
+            const connectorGeometry = new THREE.BoxGeometry(0.4, 0.4, 0.4);
+            const connector = new THREE.Mesh(connectorGeometry, connectorMaterial);
+            // Ensure connector is perfectly centered
+            connector.position.set(0, 0, 0);
+            fan.add(connector);
+            
+            // Create a rotating blade assembly
+            const bladeAssembly = new THREE.Group();
+            // Ensure blade assembly is perfectly horizontal
+            bladeAssembly.rotation.x = Math.PI / 2;
+            bladeAssembly.rotation.y = 0;
+            bladeAssembly.rotation.z = 0;
+            
+            // Create perfectly symmetrical blades
+            const bladeMaterial = new THREE.MeshPhongMaterial({ color: 0xCCCCCC, side: THREE.DoubleSide });
+            
+            // Function to create a single symmetrical blade
+            function createSymmetricalBlade(angle) {
+                // Create a perfectly symmetrical blade shape
+                const bladeShape = new THREE.Shape();
+                
+                // Start at center point
+                bladeShape.moveTo(0, 0);
+                
+                // Define blade with perfect symmetry along its length
+                const bladeLength = 5;
+                const maxWidth = 0.6; // Maximum width at the middle of the blade
+                
+                // Create symmetrical blade outline
+                bladeShape.lineTo(bladeLength * 0.1, -maxWidth * 0.5);
+                bladeShape.lineTo(bladeLength * 0.5, -maxWidth);
+                bladeShape.lineTo(bladeLength, -maxWidth * 0.3);
+                bladeShape.lineTo(bladeLength, maxWidth * 0.3);
+                bladeShape.lineTo(bladeLength * 0.5, maxWidth);
+                bladeShape.lineTo(bladeLength * 0.1, maxWidth * 0.5);
+                bladeShape.lineTo(0, 0);
+                
+                const extrudeSettings = {
+                    steps: 1,
+                    depth: 0.1,
+                    bevelEnabled: true,
+                    bevelThickness: 0.05,
+                    bevelSize: 0.05,
+                    bevelSegments: 3
+                };
+                
+                const bladeGeometry = new THREE.ExtrudeGeometry(bladeShape, extrudeSettings);
+                const blade = new THREE.Mesh(bladeGeometry, bladeMaterial);
+                
+                // Ensure blade is perfectly flat (no pitch)
+                blade.rotation.x = 0;
+                blade.rotation.y = 0;
+                blade.rotation.z = angle;
+                
+                return blade;
+            }
+            
+            // Create 3 blades at exactly 120-degree intervals for perfect symmetry
+            for (let i = 0; i < 3; i++) {
+                const angle = (i * 2 * Math.PI) / 3; // Exactly 120 degrees apart
+                const blade = createSymmetricalBlade(angle);
+                bladeAssembly.add(blade);
+            }
+            
+            // Add blade assembly to fan
+            fan.add(bladeAssembly);
+            
+            // Store blade assembly reference for rotation
+            blades.push(bladeAssembly);
+            
+            // Ensure fan is perfectly level (no tilt)
+            fan.rotation.x = 0;
+            fan.rotation.y = 0;
+            fan.rotation.z = 0;
+            
+            scene.add(fan);
+        }
+
+        // Rotate fan for testing
+        function rotateFan(axis) {
+            if (axis === 'x') {
+                fan.rotation.x += Math.PI / 12;
+            } else if (axis === 'y') {
+                fan.rotation.y += Math.PI / 12;
+            } else if (axis === 'z') {
+                fan.rotation.z += Math.PI / 12;
+            }
+            
+            // Update info display
+            document.getElementById('info').innerHTML = `
+                <p>Fan Rotation:</p>
+                <p>X: ${(fan.rotation.x * 180 / Math.PI).toFixed(2)}°</p>
+                <p>Y: ${(fan.rotation.y * 180 / Math.PI).toFixed(2)}°</p>
+                <p>Z: ${(fan.rotation.z * 180 / Math.PI).toFixed(2)}°</p>
+            `;
+        }
+
+        // Reset fan to perfect horizontal position
+        function resetFan() {
+            fan.rotation.x = 0;
+            fan.rotation.y = 0;
+            fan.rotation.z = 0;
+            
+            // Update info display
+            document.getElementById('info').innerHTML = `
+                <p>Fan Rotation:</p>
+                <p>X: 0.00°</p>
+                <p>Y: 0.00°</p>
+                <p>Z: 0.00°</p>
+            `;
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Rotate fan blades
+            if (blades.length > 0) {
+                blades.forEach(blade => {
+                    blade.rotation.z += 0.01;
+                });
+            }
+            
+            // Update controls
+            controls.update();
+            
+            // Render scene
+            renderer.render(scene, camera);
+        }
+
+        // Handle window resize
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // Initialize when page loads
+        window.onload = init;
+    </script>
+</body>
+</html>
