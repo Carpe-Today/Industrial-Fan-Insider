@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CFD Airflow Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: #fff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .simulator-display {
+            width: 100%;
+            height: 600px;
+            position: relative;
+            background-color: #000;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .control-group {
+            flex: 1;
+            min-width: 200px;
+            background-color: #222;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            background-color: #333;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 3px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        button:hover {
+            background-color: #0055aa;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .view-buttons {
+            display: flex;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            gap: 5px;
+        }
+        .view-button {
+            padding: 5px 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: 1px solid #444;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .view-button.active {
+            background-color: #0066cc;
+            border-color: #0066cc;
+        }
+        .results {
+            background-color: #222;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #444;
+        }
+        .result-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        .spinner {
+            border: 5px solid #333;
+            border-top: 5px solid #0066cc;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .manipulation-controls {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            display: flex;
+            gap: 5px;
+        }
+        .manipulation-button {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: 1px solid #444;
+            border-radius: 3px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+        }
+        .manipulation-button:hover {
+            background-color: rgba(0, 102, 204, 0.5);
+        }
+        .info-panel {
+            background-color: #222;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .info-panel h3 {
+            margin-top: 0;
+        }
+        .info-panel p {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>CFD Airflow Simulation Test</h1>
+        
+        <div class="simulator-display">
+            <canvas id="simulator-canvas"></canvas>
+            
+            <div class="view-buttons">
+                <button id="view-3d" class="view-button active">3D View</button>
+                <button id="view-top" class="view-button">Top View</button>
+                <button id="view-side" class="view-button">Side View</button>
+            </div>
+            
+            <div id="loading-overlay" class="loading-overlay">
+                <div class="spinner"></div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <h3>Room Dimensions</h3>
+                <label for="room-length">Length (ft)</label>
+                <input type="number" id="room-length" value="50" min="10" max="200">
+                
+                <label for="room-width">Width (ft)</label>
+                <input type="number" id="room-width" value="50" min="10" max="200">
+                
+                <label for="room-height">Height (ft)</label>
+                <input type="number" id="room-height" value="20" min="8" max="50">
+            </div>
+            
+            <div class="control-group">
+                <h3>Fan Configuration</h3>
+                <label for="fan-model">Model</label>
+                <select id="fan-model">
+                    <option value="powerfoil-x3">Powerfoil X3</option>
+                    <option value="powerfoil-x4">Powerfoil X4</option>
+                    <option value="basic-6">Basic 6</option>
+                    <option value="essence">Essence</option>
+                </select>
+                
+                <label for="fan-diameter">Diameter (ft)</label>
+                <input type="number" id="fan-diameter" value="14" min="8" max="24">
+                
+                <label for="fan-cfm">CFM</label>
+                <input type="number" id="fan-cfm" value="300000" min="50000" max="500000">
+                
+                <label for="fan-rpm">RPM</label>
+                <input type="number" id="fan-rpm" value="50" min="10" max="100">
+            </div>
+            
+            <div class="control-group">
+                <h3>Fan Position & Settings</h3>
+                <label for="fan-direction">Direction</label>
+                <select id="fan-direction">
+                    <option value="down">Downward</option>
+                    <option value="up">Upward</option>
+                </select>
+                
+                <label for="fan-x">X Position (ft)</label>
+                <input type="number" id="fan-x" value="25" min="5" max="45">
+                
+                <label for="fan-y">Y Position (ft)</label>
+                <input type="number" id="fan-y" value="25" min="5" max="45">
+                
+                <label for="fan-height">Height (ft)</label>
+                <input type="number" id="fan-height" value="18" min="10" max="40">
+            </div>
+            
+            <div class="control-group">
+                <h3>Simulation Settings</h3>
+                <label for="particle-density">Particle Density</label>
+                <select id="particle-density">
+                    <option value="low">Low</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="high">High</option>
+                </select>
+                
+                <div class="button-group">
+                    <button id="update-simulation">Update Simulation</button>
+                    <button id="play-pause"><i class="fas fa-pause"></i></button>
+                    <button id="reset">Reset</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="results">
+            <h3>Simulation Results</h3>
+            <div class="result-item">
+                <span>Coverage Area:</span>
+                <span id="result-coverage">1000 sq ft</span>
+            </div>
+            <div class="result-item">
+                <span>Air Changes per Hour:</span>
+                <span id="result-air-changes">4.5 ACH</span>
+            </div>
+            <div class="result-item">
+                <span>Energy Usage:</span>
+                <span id="result-energy">0.75 kW</span>
+            </div>
+            <div class="result-item">
+                <span>Cooling Effect:</span>
+                <span id="result-cooling">3.0°F</span>
+            </div>
+        </div>
+        
+        <div class="info-panel">
+            <h3>CFD Simulation Information</h3>
+            <p>This simulation uses Computational Fluid Dynamics (CFD) principles to model airflow patterns from HVLS fans. The model incorporates AMCA (Air Movement and Control Association) and SMACNA (Sheet Metal and Air Conditioning Contractors' National Association) standards for accurate airflow representation.</p>
+            <p>Key features:</p>
+            <ul>
+                <li>Free-range particle movement based on fluid dynamics equations</li>
+                <li>Turbulence modeling with proper Reynolds number calculations</li>
+                <li>Boundary layer effects near walls and surfaces</li>
+                <li>Vorticity and swirl effects from fan rotation</li>
+                <li>Thermal stratification and buoyancy effects</li>
+            </ul>
+            <p>Use the controls to adjust room dimensions, fan specifications, and simulation parameters to see how different configurations affect airflow patterns.</p>
+        </div>
+    </div>
+    
+    <script src="../js/simulator.js"></script>
+</body>
+</html>
