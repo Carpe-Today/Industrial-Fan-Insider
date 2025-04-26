@@ -3,32 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Visualize airflow patterns and optimize fan placement for your industrial facility with our interactive HVLS fan simulator.">
     <title>Airflow Simulator - Industrial Fan Insider</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="css/simulator.css">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/hero-bg-inline.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
+    <!-- Chart.js for comparison charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Three.js for 3D visualization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
 </head>
 <body>
     <!-- Header -->
-    <header class="site-header">
+    <header>
         <div class="container">
             <div class="logo">
                 <a href="../../index.html">Industrial Fan Insider</a>
             </div>
-            <nav class="main-nav">
-                <button class="menu-toggle" aria-label="Toggle menu">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </button>
-                <ul class="nav-menu">
+            <button class="menu-toggle" aria-label="Toggle menu"></button>
+            <nav>
+                <ul>
                     <li><a href="../../index.html">Home</a></li>
                     <li><a href="../../fan-types.html">Fan Types</a></li>
                     <li><a href="../../reviews.html">Reviews</a></li>
-                    <li><a href="../../content/guides/hvls_fan_buying_guide.html">Guides</a></li>
+                    <li><a href="../../guides.html">Guides</a></li>
                     <li><a href="../../industries.html">Industries</a></li>
                     <li><a href="index.html" class="active">Airflow Simulator</a></li>
                     <li><a href="../../about.html">About</a></li>
@@ -38,224 +45,219 @@
         </div>
     </header>
 
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Industrial Fan Airflow Simulator</h1>
+            <p>Visualize airflow patterns and optimize fan placement for your facility</p>
+        </div>
+    </section>
+
     <!-- Main Content -->
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1>Industrial Fan Airflow Simulator</h1>
-                <p class="subtitle">Visualize airflow patterns and optimize fan placement for your facility</p>
-            </div>
-        </section>
-
-        <section class="simulator-section">
-            <div class="container">
-                <div class="simulator-container">
-                    <div class="simulator-controls">
-                        <h2>Room Configuration</h2>
-                        <div class="control-group">
-                            <label for="room-length">Room Length (ft)</label>
-                            <input type="number" id="room-length" value="50" min="10" max="200">
-                        </div>
-                        <div class="control-group">
-                            <label for="room-width">Room Width (ft)</label>
-                            <input type="number" id="room-width" value="50" min="10" max="200">
-                        </div>
-                        <div class="control-group">
-                            <label for="room-height">Ceiling Height (ft)</label>
-                            <input type="number" id="room-height" value="20" min="8" max="50">
-                        </div>
-
-                        <h2>Fan Configuration</h2>
-                        <div class="control-group">
-                            <label for="fan-model">Fan Model</label>
-                            <select id="fan-model">
-                                <option value="powerfoil-x3">Big Ass Fans Powerfoil X3.0</option>
-                                <option value="hunter-eco">Hunter Industrial ECO</option>
-                                <option value="macroair">MacroAir AirVolution-D</option>
-                                <option value="custom">Custom Fan</option>
-                            </select>
-                        </div>
-                        <div class="control-group">
-                            <label for="fan-diameter">Fan Diameter (ft)</label>
-                            <input type="number" id="fan-diameter" value="14" min="8" max="24">
-                        </div>
-                        <div class="control-group">
-                            <label for="fan-cfm">Fan CFM</label>
-                            <input type="number" id="fan-cfm" value="300000" min="50000" max="500000">
-                        </div>
-                        <div class="control-group">
-                            <label for="fan-rpm">Fan RPM</label>
-                            <input type="number" id="fan-rpm" value="50" min="10" max="100">
-                        </div>
-                        <div class="control-group">
-                            <label for="fan-direction">Fan Direction</label>
-                            <select id="fan-direction">
-                                <option value="down">Downward</option>
-                                <option value="up">Upward</option>
-                            </select>
-                        </div>
-                        <div class="control-group">
-                            <label for="fan-x">Fan X Position (ft)</label>
-                            <input type="number" id="fan-x" value="25" min="0" max="50">
-                        </div>
-                        <div class="control-group">
-                            <label for="fan-y">Fan Y Position (ft)</label>
-                            <input type="number" id="fan-y" value="25" min="0" max="50">
-                        </div>
-                        <div class="control-group">
-                            <label for="fan-height">Fan Height (ft)</label>
-                            <input type="number" id="fan-height" value="18" min="0" max="20">
-                        </div>
-
-                        <h2>Visualization</h2>
-                        <div class="control-group">
-                            <label for="particle-density">Particle Density</label>
-                            <select id="particle-density">
-                                <option value="low">Low</option>
-                                <option value="medium" selected>Medium</option>
-                                <option value="high">High</option>
-                            </select>
-                        </div>
-
-                        <div class="button-group">
-                            <button id="update-simulation" class="button primary">Update Simulation</button>
-                            <button id="play-pause" class="button secondary"><i class="fas fa-pause"></i></button>
-                            <button id="reset" class="button secondary">Reset</button>
-                        </div>
-
-                        <div class="results-panel">
-                            <h3>Simulation Results</h3>
-                            <div class="result-item">
-                                <span class="result-label">Coverage Area:</span>
-                                <span id="result-coverage" class="result-value">0 sq ft</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="result-label">Air Changes:</span>
-                                <span id="result-air-changes" class="result-value">0 ACH</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="result-label">Energy Usage:</span>
-                                <span id="result-energy" class="result-value">0 kW</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="result-label">Cooling Effect:</span>
-                                <span id="result-cooling" class="result-value">0°F</span>
-                            </div>
-                            
-                            <button id="export-results" class="export-button">
-                                <i class="fas fa-download"></i> Export Results
-                            </button>
-                            
-                            <button id="compare-fans" class="export-button" style="margin-top: 10px; background-color: #007bff;">
-                                <i class="fas fa-exchange-alt"></i> Compare Fans
-                            </button>
-                            
-                            <div id="comparison-section" style="display: none;">
-                                <!-- Comparison content will be added dynamically -->
-                            </div>
-                        </div>
+    <main class="container">
+        <div class="simulator-container">
+            <!-- Configuration Panel -->
+            <div class="config-panel">
+                <section class="config-section">
+                    <h2>Room Configuration</h2>
+                    <div class="control-group">
+                        <label for="room-length">Room Length (ft)</label>
+                        <input type="number" id="room-length" value="50" min="10" max="200">
                     </div>
+                    <div class="control-group">
+                        <label for="room-width">Room Width (ft)</label>
+                        <input type="number" id="room-width" value="50" min="10" max="200">
+                    </div>
+                    <div class="control-group">
+                        <label for="room-height">Ceiling Height (ft)</label>
+                        <input type="number" id="room-height" value="20" min="8" max="50">
+                    </div>
+                </section>
 
-                    <div class="simulator-display">
-                        <div class="view-controls">
-                            <button id="view-top" class="button view-button">Top View</button>
-                            <button id="view-side" class="button view-button">Side View</button>
-                            <button id="view-3d" class="button view-button active">3D View</button>
-                        </div>
-                        <canvas id="simulator-canvas"></canvas>
-                        <div id="loading-overlay" class="loading-overlay">
-                            <div class="spinner"></div>
-                            <div>Loading simulation...</div>
-                        </div>
+                <section class="config-section">
+                    <h2>Fan Configuration</h2>
+                    <div class="control-group">
+                        <label for="fan-model">Fan Model</label>
+                        <select id="fan-model">
+                            <option value="powerfoil-x3">Big Ass Fans Powerfoil X3.0</option>
+                            <option value="hunter-eco">Hunter Industrial ECO</option>
+                            <option value="macroair">MacroAir AirVolution-D</option>
+                            <option value="custom">Custom Fan</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="fan-diameter">Fan Diameter (ft)</label>
+                        <input type="number" id="fan-diameter" value="14" min="8" max="24">
+                    </div>
+                    <div class="control-group">
+                        <label for="fan-cfm">Fan CFM</label>
+                        <input type="number" id="fan-cfm" value="300000" min="50000" max="500000">
+                    </div>
+                    <div class="control-group">
+                        <label for="fan-rpm">Fan RPM</label>
+                        <input type="number" id="fan-rpm" value="50" min="10" max="100">
+                    </div>
+                    <div class="control-group">
+                        <label for="fan-direction">Fan Direction</label>
+                        <select id="fan-direction">
+                            <option value="down">Downward (Push)</option>
+                            <option value="up">Upward (Pull)</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="fan-x">Fan X Position (ft)</label>
+                        <input type="number" id="fan-x" value="25" min="0" max="200">
+                    </div>
+                    <div class="control-group">
+                        <label for="fan-y">Fan Y Position (ft)</label>
+                        <input type="number" id="fan-y" value="25" min="0" max="200">
+                    </div>
+                    <div class="control-group">
+                        <label for="fan-height">Fan Height (ft)</label>
+                        <input type="number" id="fan-height" value="18" min="0" max="50">
+                    </div>
+                </section>
+
+                <section class="config-section">
+                    <h2>Visualization</h2>
+                    <div class="control-group">
+                        <label for="particle-density">Particle Density</label>
+                        <select id="particle-density">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="button-group">
+                        <button id="update-simulation" class="button primary">Update Simulation</button>
+                        <button id="reset" class="button secondary">Reset</button>
+                    </div>
+                    <div class="button-group">
+                        <button id="export-results" class="button secondary">Export Results</button>
+                        <button id="compare-fans" class="button secondary">Compare Fans</button>
+                    </div>
+                </section>
+
+                <section class="config-section results-section">
+                    <h2>Simulation Results</h2>
+                    <div class="result-item">
+                        <span class="result-label">Coverage Area:</span>
+                        <span id="result-coverage" class="result-value">1385 sq ft</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Air Changes:</span>
+                        <span id="result-air-changes" class="result-value">360.0 ACH</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Energy Usage:</span>
+                        <span id="result-energy" class="result-value">1.31 kW</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Cooling Effect:</span>
+                        <span id="result-cooling" class="result-value">15.0°F</span>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Visualization Panel -->
+            <div class="visualization-panel">
+                <div class="view-controls">
+                    <button id="view-top" class="view-button">Top View</button>
+                    <button id="view-side" class="view-button">Side View</button>
+                    <button id="view-3d" class="view-button active">3D View</button>
+                    <button id="play-pause" class="control-button"><i class="fas fa-pause"></i></button>
+                </div>
+                <div class="simulator-display">
+                    <canvas id="simulator-canvas"></canvas>
+                    <div id="loading-overlay">
+                        <div class="spinner"></div>
+                        <p>Loading simulation...</p>
                     </div>
                 </div>
+                
+                <!-- Fan Comparison Section (initially hidden) -->
+                <div id="comparison-section" style="display: none;"></div>
             </div>
-        </section>
+        </div>
 
         <section class="info-section">
-            <div class="container">
-                <h2>Understanding Airflow Patterns</h2>
-                <p>Industrial fans create complex airflow patterns that can significantly impact comfort, energy efficiency, and productivity in your facility. Here's how to interpret the visualization:</p>
-
-                <div class="info-columns">
-                    <div class="info-column">
-                        <h3>Downward Flow Pattern</h3>
-                        <p>When fans are set to push air downward (the most common configuration):</p>
-                        <ul>
-                            <li>Air is forced down from the fan in a columnar pattern</li>
-                            <li>When the air column reaches the floor, it spreads outward in all directions</li>
-                            <li>The air then rises along walls and other boundaries</li>
-                            <li>Finally, it's drawn back toward the fan from above, completing the circulation</li>
-                        </ul>
-                        <p>This pattern creates a continuous air movement that helps maintain consistent temperatures throughout the space.</p>
-                    </div>
-
-                    <div class="info-column">
-                        <h3>Upward Flow Pattern</h3>
-                        <p>When fans are set to pull air upward (sometimes used in specific applications):</p>
-                        <ul>
-                            <li>Air is drawn up toward the fan from below</li>
-                            <li>It then spreads outward at ceiling level</li>
-                            <li>The air descends along walls and boundaries</li>
-                            <li>Finally, it moves inward along the floor back toward the center</li>
-                        </ul>
-                        <p>This configuration can be useful in spaces with high ceilings or where specific ventilation requirements exist.</p>
-                    </div>
+            <h2>Understanding Airflow Patterns</h2>
+            <p>Industrial fans create complex airflow patterns that can significantly impact comfort, energy efficiency, and productivity in your facility. Here's how to interpret the visualization:</p>
+            
+            <div class="info-columns">
+                <div class="info-column">
+                    <h3>Downward Flow Pattern</h3>
+                    <p>When fans are set to push air downward (the most common configuration):</p>
+                    <ul>
+                        <li>Air is forced down from the fan in a columnar pattern</li>
+                        <li>When the air column reaches the floor, it spreads outward in all directions</li>
+                        <li>The air then rises along walls and other boundaries</li>
+                        <li>Finally, it's drawn back toward the fan from above, completing the circulation</li>
+                    </ul>
+                    <p>This pattern creates a continuous air movement that helps maintain consistent temperatures throughout the space.</p>
+                </div>
+                
+                <div class="info-column">
+                    <h3>Upward Flow Pattern</h3>
+                    <p>When fans are set to pull air upward (sometimes used in specific applications):</p>
+                    <ul>
+                        <li>Air is drawn up toward the fan from below</li>
+                        <li>It then spreads outward at ceiling level</li>
+                        <li>The air descends along walls and boundaries</li>
+                        <li>Finally, it moves inward along the floor back toward the center</li>
+                    </ul>
+                    <p>This configuration can be useful in spaces with high ceilings or where specific ventilation requirements exist.</p>
                 </div>
             </div>
         </section>
 
         <section class="cta-section">
-            <div class="container">
-                <h2>Need Help Selecting the Right Fan?</h2>
-                <p>Our comprehensive guides can help you choose the perfect industrial fan for your facility:</p>
-                <div class="cta-buttons">
-                    <a href="../../content/guides/hvls_fan_buying_guide.html" class="button primary">HVLS Fan Buying Guide</a>
-                    <a href="../../content/guides/warehouse_ventilation_guide.html" class="button primary">Warehouse Ventilation Guide</a>
-                    <a href="../../content/guides/energy_efficiency_guide.html" class="button primary">Energy Efficiency Guide</a>
-                </div>
+            <h2>Need Help Selecting the Right Fan?</h2>
+            <p>Our comprehensive guides can help you choose the perfect industrial fan for your facility:</p>
+            <div class="guide-links">
+                <a href="../guides/hvls_fan_buying_guide.html" class="guide-link">HVLS Fan Buying Guide</a>
+                <a href="../guides/warehouse_ventilation_guide.html" class="guide-link">Warehouse Ventilation Guide</a>
+                <a href="../guides/energy_efficiency_guide.html" class="guide-link">Energy Efficiency Guide</a>
             </div>
         </section>
     </main>
 
     <!-- Footer -->
-    <footer class="site-footer">
+    <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>Industrial Fan Insider</h3>
-                    <p>Your trusted source for industrial fan information, reviews, and resources.</p>
+                    <p>Your trusted source for industrial fan information, reviews, and buying guides.</p>
                 </div>
                 <div class="footer-section">
                     <h3>Quick Links</h3>
                     <ul>
                         <li><a href="../../index.html">Home</a></li>
-                        <li><a href="../../content/guides/hvls_fan_buying_guide.html">HVLS Fan Guide</a></li>
-                        <li><a href="index.html">Airflow Simulator</a></li>
-                        <li><a href="../../contact.html">Contact Us</a></li>
+                        <li><a href="../../fan-types.html">Fan Types</a></li>
+                        <li><a href="../../reviews.html">Reviews</a></li>
+                        <li><a href="../../guides.html">Guides</a></li>
+                        <li><a href="../../about.html">About</a></li>
+                        <li><a href="../../contact.html">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Connect With Us</h3>
-                    <div class="social-icons">
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Industrial Fan Insider. All Rights Reserved.</p>
+                <p>&copy; 2025 Industrial Fan Insider. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="js/simulator_fixed_loading.js"></script>
-    <script src="js/export_comparison.js"></script>
-    <script src="js/scripts.js"></script>
+    <!-- JavaScript -->
+    <script src="js/simulator_complete.js"></script>
 </body>
 </html>
