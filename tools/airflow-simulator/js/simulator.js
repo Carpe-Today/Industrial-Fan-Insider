@@ -19,6 +19,12 @@ let fanConfig = {
 let particleDensity = 'medium';
 let particleCounts = { low: 500, medium: 1500, high: 3000 };
 
+// Controls for camera manipulation
+let controls;
+let isDragging = false;
+let previousMousePosition = { x: 0, y: 0 };
+let zoomLevel = 1;
+
 // Initialize the simulator
 function initSimulator() {
     // Create scene
@@ -31,7 +37,7 @@ function initSimulator() {
     
     // Create renderer
     renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('simulator-canvas'), antialias: true });
-    renderer.setSize(document.getElementById('simulator-canvas').offsetWidth, document.getElementById('simulator-canvas').offsetHeight);
+    renderer.setSize(document.querySelector('.simulator-display').offsetWidth, document.querySelector('.simulator-display').offsetHeight);
     renderer.shadowMap.enabled = true;
     
     // Add lights
@@ -52,11 +58,23 @@ function initSimulator() {
     // Create particles
     createParticles();
     
+    // Add orbit controls for camera manipulation
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.25;
+    controls.screenSpacePanning = false;
+    controls.maxPolarAngle = Math.PI;
+    controls.minDistance = 5;
+    controls.maxDistance = 100;
+    
     // Start animation
     animate();
     
     // Add event listeners
     window.addEventListener('resize', onWindowResize);
+    
+    // Add manipulation controls
+    setupManipulationControls();
     
     // Hide loading overlay
     document.getElementById('loading-overlay').style.display = 'none';
@@ -272,6 +290,11 @@ function animate() {
         updateParticles();
     }
     
+    // Update controls
+    if (controls) {
+        controls.update();
+    }
+    
     // Render scene
     renderer.render(scene, camera);
 }
@@ -442,7 +465,7 @@ function updateParticles() {
                     particle.phase = 1;
                 }
             }
-            // Phase 1: Along floor, moving toward fan
+            // Phase 1: Along floor, moving toward center
             else if (particle.phase === 1) {
                 const directionToCenter = new THREE.Vector3(
                     fanCenter.x - particle.position.x,
@@ -460,81 +483,19 @@ function updateParticles() {
             }
         }
         
-        // Apply velocity
+        // Apply velocity to position
         particle.position.x += particle.velocity.x;
         particle.position.y += particle.velocity.y;
         particle.position.z += particle.velocity.z;
         
-        // Apply slight randomness for natural movement
-        particle.position.x += (Math.random() - 0.5) * 0.01;
-        particle.position.y += (Math.random() - 0.5) * 0.01;
-        particle.position.z += (Math.random() - 0.5) * 0.01;
-        
-        // Reset particles that go out of bounds or are too old
-        if (
-            particle.position.x < 0 || 
-            particle.position.x > roomDimensions.length ||
-            particle.position.y < 0 || 
-            particle.position.y > roomDimensions.height ||
-            particle.position.z < 0 || 
-            particle.position.z > roomDimensions.width ||
-            particle.age > 300
-        ) {
-            // Reset with random position and phase
-            resetParticle(particle);
-        }
-        
-        // Scale particle size based on velocity magnitude for visual effect
-        const speed = Math.sqrt(
-            particle.velocity.x * particle.velocity.x +
-            particle.velocity.y * particle.velocity.y +
-            particle.velocity.z * particle.velocity.z
-        );
-        
-        const scale = 0.5 + speed * 5;
-        particle.scale.set(scale, scale, scale);
+        // Keep particles within room bounds
+        particle.position.x = Math.max(0.5, Math.min(roomDimensions.length - 0.5, particle.position.x));
+        particle.position.y = Math.max(0.5, Math.min(roomDimensions.height - 0.5, particle.position.y));
+        particle.position.z = Math.max(0.5, Math.min(roomDimensions.width - 0.5, particle.position.z));
     });
 }
 
-// Reset a particle to a new position
-function resetParticle(particle) {
-    // Determine a good starting position based on current fan direction
-    if (fanConfig.direction === 'down') {
-        // For downward fan, start particles near the fan
-        const radius = (Math.random() * fanConfig.diameter / 2) + 0.5;
-        const angle = Math.random() * Math.PI * 2;
-        
-        particle.position.set(
-            fanConfig.position.x + radius * Math.cos(angle),
-            fanConfig.position.z,
-            fanConfig.position.y + radius * Math.sin(angle)
-        );
-        
-        particle.phase = 0; // Start in "under fan" phase
-    } else {
-        // For upward fan, start particles near the floor
-        particle.position.set(
-            Math.random() * roomDimensions.length,
-            1,
-            Math.random() * roomDimensions.width
-        );
-        
-        particle.phase = 1; // Start in "floor" phase
-    }
-    
-    particle.velocity.set(0, 0, 0);
-    particle.age = 0;
-}
-
-// Handle window resize
-function onWindowResize() {
-    const canvas = document.getElementById('simulator-canvas');
-    camera.aspect = canvas.offsetWidth / canvas.offsetHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
-}
-
-// Set camera position for 3D view
+// Set camera to 3D view
 function setCamera3DView() {
     camera.position.set(
         roomDimensions.length * 0.7,
@@ -546,13 +507,15 @@ function setCamera3DView() {
         roomDimensions.height / 2,
         roomDimensions.width / 2
     );
+    currentView = '3d';
+    updateViewButtons();
 }
 
-// Set camera position for top view
+// Set camera to top view
 function setCameraTopView() {
     camera.position.set(
         roomDimensions.length / 2,
-        roomDimensions.height * 1.5,
+        roomDimensions.height * 2,
         roomDimensions.width / 2
     );
     camera.lookAt(
@@ -560,32 +523,108 @@ function setCameraTopView() {
         0,
         roomDimensions.width / 2
     );
+    currentView = 'top';
+    updateViewButtons();
 }
 
-// Set camera position for side view
+// Set camera to side view
 function setCameraSideView() {
     camera.position.set(
-        roomDimensions.length * 1.5,
+        roomDimensions.length * 2,
         roomDimensions.height / 2,
         roomDimensions.width / 2
     );
     camera.lookAt(
-        roomDimensions.length / 2,
+        0,
         roomDimensions.height / 2,
         roomDimensions.width / 2
     );
+    currentView = 'side';
+    updateViewButtons();
 }
 
-// Update simulation with current settings
-function updateSimulation() {
-    // Show loading overlay
-    document.getElementById('loading-overlay').style.display = 'flex';
+// Update view buttons to show active state
+function updateViewButtons() {
+    document.querySelectorAll('.view-button').forEach(button => {
+        button.classList.remove('active');
+    });
     
-    // Get values from inputs
+    if (currentView === '3d') {
+        document.getElementById('view-3d').classList.add('active');
+    } else if (currentView === 'top') {
+        document.getElementById('view-top').classList.add('active');
+    } else if (currentView === 'side') {
+        document.getElementById('view-side').classList.add('active');
+    }
+}
+
+// Handle window resize
+function onWindowResize() {
+    const displayElement = document.querySelector('.simulator-display');
+    camera.aspect = displayElement.offsetWidth / displayElement.offsetHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(displayElement.offsetWidth, displayElement.offsetHeight);
+}
+
+// Setup manipulation controls
+function setupManipulationControls() {
+    // Create manipulation controls container if it doesn't exist
+    if (!document.querySelector('.manipulation-controls')) {
+        const controlsContainer = document.createElement('div');
+        controlsContainer.className = 'manipulation-controls';
+        
+        // Zoom in button
+        const zoomInButton = document.createElement('button');
+        zoomInButton.className = 'manipulation-button';
+        zoomInButton.innerHTML = '<i class="fas fa-plus"></i>';
+        zoomInButton.title = 'Zoom In';
+        zoomInButton.addEventListener('click', () => {
+            controls.dollyIn(1.2);
+        });
+        
+        // Zoom out button
+        const zoomOutButton = document.createElement('button');
+        zoomOutButton.className = 'manipulation-button';
+        zoomOutButton.innerHTML = '<i class="fas fa-minus"></i>';
+        zoomOutButton.title = 'Zoom Out';
+        zoomOutButton.addEventListener('click', () => {
+            controls.dollyOut(1.2);
+        });
+        
+        // Reset view button
+        const resetViewButton = document.createElement('button');
+        resetViewButton.className = 'manipulation-button';
+        resetViewButton.innerHTML = '<i class="fas fa-home"></i>';
+        resetViewButton.title = 'Reset View';
+        resetViewButton.addEventListener('click', () => {
+            if (currentView === '3d') {
+                setCamera3DView();
+            } else if (currentView === 'top') {
+                setCameraTopView();
+            } else if (currentView === 'side') {
+                setCameraSideView();
+            }
+            controls.reset();
+        });
+        
+        // Add buttons to container
+        controlsContainer.appendChild(zoomInButton);
+        controlsContainer.appendChild(zoomOutButton);
+        controlsContainer.appendChild(resetViewButton);
+        
+        // Add container to simulator display
+        document.querySelector('.simulator-display').appendChild(controlsContainer);
+    }
+}
+
+// Update simulation based on form inputs
+function updateSimulation() {
+    // Get room dimensions
     roomDimensions.length = parseFloat(document.getElementById('room-length').value);
     roomDimensions.width = parseFloat(document.getElementById('room-width').value);
     roomDimensions.height = parseFloat(document.getElementById('room-height').value);
     
+    // Get fan configuration
     fanConfig.model = document.getElementById('fan-model').value;
     fanConfig.diameter = parseFloat(document.getElementById('fan-diameter').value);
     fanConfig.cfm = parseFloat(document.getElementById('fan-cfm').value);
@@ -595,10 +634,10 @@ function updateSimulation() {
     fanConfig.position.y = parseFloat(document.getElementById('fan-y').value);
     fanConfig.position.z = parseFloat(document.getElementById('fan-height').value);
     
+    // Get particle density
     particleDensity = document.getElementById('particle-density').value;
     
     // Recreate scene
-    scene.clear();
     createRoom();
     createFan();
     createParticles();
@@ -614,9 +653,6 @@ function updateSimulation() {
     
     // Update simulation results
     updateResults();
-    
-    // Hide loading overlay
-    document.getElementById('loading-overlay').style.display = 'none';
 }
 
 // Update simulation results
@@ -625,17 +661,17 @@ function updateResults() {
     const coverageArea = Math.PI * Math.pow(fanConfig.diameter * 1.5, 2);
     document.getElementById('result-coverage').textContent = Math.round(coverageArea) + ' sq ft';
     
-    // Calculate air changes per hour (simplified)
+    // Calculate air changes per hour (simplified calculation)
     const roomVolume = roomDimensions.length * roomDimensions.width * roomDimensions.height;
     const airChanges = (fanConfig.cfm * 60) / roomVolume;
     document.getElementById('result-air-changes').textContent = airChanges.toFixed(1) + ' ACH';
     
-    // Calculate energy usage (simplified)
-    const energyUsage = (fanConfig.diameter / 10) * (fanConfig.rpm / 50) * 0.75;
+    // Calculate energy usage (simplified calculation)
+    const energyUsage = (fanConfig.diameter / 10) * (fanConfig.rpm / 40) * 0.75;
     document.getElementById('result-energy').textContent = energyUsage.toFixed(2) + ' kW';
     
-    // Calculate cooling effect (simplified)
-    const coolingEffect = (fanConfig.diameter / 10) * (fanConfig.rpm / 40) * 0.8;
+    // Calculate cooling effect (simplified calculation)
+    const coolingEffect = (fanConfig.cfm / 50000) * (fanConfig.rpm / 50) * 0.5;
     document.getElementById('result-cooling').textContent = coolingEffect.toFixed(1) + '°F';
 }
 
@@ -643,16 +679,19 @@ function updateResults() {
 function togglePlayPause() {
     isPlaying = !isPlaying;
     const playPauseButton = document.getElementById('play-pause');
-    playPauseButton.innerHTML = isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
+    if (isPlaying) {
+        playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+    } else {
+        playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+    }
 }
 
 // Reset simulation
 function resetSimulation() {
-    // Reset to default values
+    // Reset form inputs to defaults
     document.getElementById('room-length').value = 50;
     document.getElementById('room-width').value = 50;
     document.getElementById('room-height').value = 20;
-    
     document.getElementById('fan-model').value = 'powerfoil-x3';
     document.getElementById('fan-diameter').value = 14;
     document.getElementById('fan-cfm').value = 300000;
@@ -661,44 +700,40 @@ function resetSimulation() {
     document.getElementById('fan-x').value = 25;
     document.getElementById('fan-y').value = 25;
     document.getElementById('fan-height').value = 18;
-    
     document.getElementById('particle-density').value = 'medium';
     
     // Update simulation
     updateSimulation();
 }
 
-// Change view
-function changeView(view) {
-    currentView = view;
-    
-    // Update active button
-    document.querySelectorAll('.view-button').forEach(button => {
-        button.classList.remove('active');
-    });
-    document.getElementById('view-' + view).classList.add('active');
-    
-    // Set camera position
-    if (view === '3d') {
-        setCamera3DView();
-    } else if (view === 'top') {
-        setCameraTopView();
-    } else if (view === 'side') {
-        setCameraSideView();
-    }
-}
-
-// Initialize when DOM is loaded
+// Add event listeners when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize simulator
     initSimulator();
     
-    // Add event listeners
+    // Add event listeners for controls
     document.getElementById('update-simulation').addEventListener('click', updateSimulation);
     document.getElementById('play-pause').addEventListener('click', togglePlayPause);
     document.getElementById('reset').addEventListener('click', resetSimulation);
     
-    document.getElementById('view-top').addEventListener('click', function() { changeView('top'); });
-    document.getElementById('view-side').addEventListener('click', function() { changeView('side'); });
-    document.getElementById('view-3d').addEventListener('click', function() { changeView('3d'); });
+    // Add event listeners for view buttons
+    document.getElementById('view-top').addEventListener('click', setCameraTopView);
+    document.getElementById('view-side').addEventListener('click', setCameraSideView);
+    document.getElementById('view-3d').addEventListener('click', setCamera3DView);
+    
+    // Initialize results
+    updateResults();
 });
+
+// Load OrbitControls from CDN if not available
+if (typeof THREE.OrbitControls === 'undefined') {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js';
+    script.onload = function() {
+        // Reinitialize simulator after OrbitControls is loaded
+        if (typeof initSimulator === 'function') {
+            initSimulator();
+        }
+    };
+    document.head.appendChild(script);
+}

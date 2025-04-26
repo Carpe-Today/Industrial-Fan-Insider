@@ -1,76 +1,101 @@
 /* Airflow Simulator Styles */
 .simulator-container {
+    display: flex;
+    flex-direction: row;
     position: relative;
     background-color: #f8f9fa;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
 }
 
-#simulator-canvas-container {
+.simulator-controls {
+    flex: 1;
+    padding: 20px;
+    max-width: 350px;
+    border-right: 1px solid #e9ecef;
+    overflow-y: auto;
+}
+
+.simulator-display {
+    flex: 2;
     position: relative;
-    width: 100%;
-    height: 500px;
     background-color: #000;
-    overflow: hidden;
+    min-height: 600px;
 }
 
 #simulator-canvas {
     width: 100%;
     height: 100%;
     display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .view-controls {
-    padding: 10px;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #e9ecef;
-}
-
-.view-controls button {
-    margin-right: 5px;
-}
-
-.simulation-stats {
-    font-size: 0.9rem;
-}
-
-.stat-item {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 5;
     display: flex;
-    flex-direction: column;
+    gap: 5px;
 }
 
-.stat-label {
-    font-size: 0.8rem;
-    color: #6c757d;
-}
-
-.stat-value {
-    font-weight: 600;
-    color: #212529;
-}
-
-.simulator-controls {
-    height: 100%;
-}
-
-.simulator-controls .form-group {
-    margin-bottom: 1rem;
-}
-
-.simulator-controls label {
+.view-button {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
     font-size: 0.9rem;
-    margin-bottom: 0.25rem;
 }
 
-.recommended-fan-item {
-    padding: 10px;
-    border: 1px solid #e9ecef;
+.view-button.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.control-group {
+    margin-bottom: 15px;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.control-group input,
+.control-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ced4da;
     border-radius: 4px;
 }
 
-.recommended-fan-item h4 {
-    margin-bottom: 0.25rem;
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.results-panel {
+    background-color: #e9ecef;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.result-label {
+    font-weight: 500;
 }
 
 #loading-overlay {
@@ -98,16 +123,50 @@
     margin-bottom: 10px;
 }
 
+/* Zoom and manipulation controls */
+.manipulation-controls {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.manipulation-button {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.manipulation-button:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
 
-@media (max-width: 768px) {
-    #simulator-canvas-container {
-        height: 350px;
+@media (max-width: 992px) {
+    .simulator-container {
+        flex-direction: column;
     }
     
     .simulator-controls {
-        margin-bottom: 20px;
+        max-width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .simulator-display {
+        min-height: 400px;
     }
 }
