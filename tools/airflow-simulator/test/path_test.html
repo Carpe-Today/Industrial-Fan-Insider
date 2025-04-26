@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Path Fix Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .test-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .test-item h2 {
+            margin-top: 0;
+            color: #444;
+        }
+        .status {
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+        }
+        .failure {
+            color: red;
+        }
+        .code {
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 3px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Path Fix Test</h1>
+        
+        <div class="test-item">
+            <h2>CSS Path Test</h2>
+            <p>Testing if the CSS file can be loaded with the new path: <code>/css/styles.css</code></p>
+            <div id="css-test-result" class="status">Testing...</div>
+            <div class="code" id="css-test-code"></div>
+        </div>
+        
+        <div class="test-item">
+            <h2>JavaScript Path Test</h2>
+            <p>Testing if the JavaScript file can be loaded with the new path: <code>/js/scripts.js</code></p>
+            <div id="js-test-result" class="status">Testing...</div>
+            <div class="code" id="js-test-code"></div>
+        </div>
+        
+        <div class="test-item">
+            <h2>Local JavaScript Path Test</h2>
+            <p>Testing if the local JavaScript files can be loaded with the current path: <code>js/simulator_fixed_loading.js</code> and <code>js/export_comparison.js</code></p>
+            <div id="local-js-test-result" class="status">Testing...</div>
+            <div class="code" id="local-js-test-code"></div>
+        </div>
+        
+        <div class="test-item">
+            <h2>Navigation Links Test</h2>
+            <p>Testing if the navigation links are correctly formatted with absolute paths</p>
+            <div id="nav-test-result" class="status">Testing...</div>
+            <div class="code" id="nav-test-code"></div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Test CSS path
+            const cssTest = document.getElementById('css-test-result');
+            const cssTestCode = document.getElementById('css-test-code');
+            
+            fetch('/css/styles.css')
+                .then(response => {
+                    if (response.ok) {
+                        cssTest.textContent = 'SUCCESS: CSS file loaded successfully';
+                        cssTest.className = 'status success';
+                        return response.text();
+                    } else {
+                        throw new Error(`Failed to load CSS file: ${response.status} ${response.statusText}`);
+                    }
+                })
+                .then(css => {
+                    cssTestCode.textContent = css.substring(0, 200) + '...';
+                })
+                .catch(error => {
+                    cssTest.textContent = `FAILURE: ${error.message}`;
+                    cssTest.className = 'status failure';
+                    cssTestCode.textContent = 'Alternative solution: Use a relative path like "../../css/styles.css" or copy the CSS file to the local directory';
+                });
+            
+            // Test JS path
+            const jsTest = document.getElementById('js-test-result');
+            const jsTestCode = document.getElementById('js-test-code');
+            
+            fetch('/js/scripts.js')
+                .then(response => {
+                    if (response.ok) {
+                        jsTest.textContent = 'SUCCESS: JavaScript file loaded successfully';
+                        jsTest.className = 'status success';
+                        return response.text();
+                    } else {
+                        throw new Error(`Failed to load JavaScript file: ${response.status} ${response.statusText}`);
+                    }
+                })
+                .then(js => {
+                    jsTestCode.textContent = js.substring(0, 200) + '...';
+                })
+                .catch(error => {
+                    jsTest.textContent = `FAILURE: ${error.message}`;
+                    jsTest.className = 'status failure';
+                    jsTestCode.textContent = 'Alternative solution: Use a relative path like "../../js/scripts.js" or copy the JS file to the local directory';
+                });
+            
+            // Test local JS paths
+            const localJsTest = document.getElementById('local-js-test-result');
+            const localJsTestCode = document.getElementById('local-js-test-code');
+            
+            Promise.all([
+                fetch('../../js/simulator_fixed_loading.js').then(response => response.ok),
+                fetch('../../js/export_comparison.js').then(response => response.ok)
+            ])
+                .then(results => {
+                    if (results.every(result => result === true)) {
+                        localJsTest.textContent = 'SUCCESS: Local JavaScript files loaded successfully';
+                        localJsTest.className = 'status success';
+                        localJsTestCode.textContent = 'Both simulator_fixed_loading.js and export_comparison.js were found';
+                    } else {
+                        throw new Error('One or more local JavaScript files failed to load');
+                    }
+                })
+                .catch(error => {
+                    localJsTest.textContent = `FAILURE: ${error.message}`;
+                    localJsTest.className = 'status failure';
+                    localJsTestCode.textContent = 'Check if the files exist in the js directory and if the paths are correct';
+                });
+            
+            // Test navigation links
+            const navTest = document.getElementById('nav-test-result');
+            const navTestCode = document.getElementById('nav-test-code');
+            
+            fetch('../../index.html')
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const links = doc.querySelectorAll('a');
+                    
+                    const absoluteLinks = Array.from(links).filter(link => 
+                        link.getAttribute('href') && 
+                        link.getAttribute('href').startsWith('/') && 
+                        !link.getAttribute('href').startsWith('//') &&
+                        !link.getAttribute('href').startsWith('/#')
+                    );
+                    
+                    if (absoluteLinks.length > 0) {
+                        navTest.textContent = `SUCCESS: Found ${absoluteLinks.length} absolute path links`;
+                        navTest.className = 'status success';
+                        navTestCode.textContent = Array.from(absoluteLinks)
+                            .slice(0, 5)
+                            .map(link => link.outerHTML)
+                            .join('\n');
+                    } else {
+                        navTest.textContent = 'FAILURE: No absolute path links found';
+                        navTest.className = 'status failure';
+                        navTestCode.textContent = 'All navigation links should start with / for absolute paths';
+                    }
+                })
+                .catch(error => {
+                    navTest.textContent = `FAILURE: ${error.message}`;
+                    navTest.className = 'status failure';
+                });
+        });
+    </script>
+</body>
+</html>
